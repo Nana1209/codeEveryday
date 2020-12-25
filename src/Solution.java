@@ -191,10 +191,96 @@ public class Solution {
         }
         return true;
     }
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result=new ArrayList<>();
+        List<Integer> nodes=new ArrayList<>();
+        nodes.add(root.val);
+        for(int i=0;i<nodes.size();i++){
+
+        }
+
+        return result;
+    }
+    public int findContentChildren(int[] g, int[] s) {
+        int result=0;
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int i=0,j=0;
+        while(i<g.length && j<s.length){
+            if(g[i]<=s[j]){
+                i++;j++;
+                result++;
+            }else{
+                j++;
+            }
+        }
+        return result;
+    }
+    public static int lengthOfLongestSubstring(String s) {
+        /*if(s.length()==1 || s.length()==0) return s.length();
+        Map<Character,Integer> result=new HashMap<>();
+        Map<Character, Integer> temp=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            if(temp.containsKey(s.charAt(i))){
+                i=temp.get(s.charAt(i))+1;
+                if(temp.size()>=result.size()){
+                    result.clear();
+                    result.putAll(temp);
+                }
+                temp.clear();
+                temp.put(s.charAt(i),i);
+            }else {
+                temp.put(s.charAt(i),i);
+            }
+        }
+        return result.size()>=temp.size()?result.size():temp.size();*/
+        /*优化1
+        if(s.length()==1 || s.length()==0) return s.length();
+        int result=0;
+        Map<Character, Integer> temp=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            if(temp.containsKey(s.charAt(i))){
+                i=temp.get(s.charAt(i))+1;
+                if(temp.size()>=result){
+                    result=temp.size();
+                }
+                temp.clear();
+                temp.put(s.charAt(i),i);
+            }else {
+                temp.put(s.charAt(i),i);
+            }
+        }
+        return result>=temp.size()?result:temp.size();*/
+        if(s.length()==1 || s.length()==0) return s.length();
+        int result=0;
+        int left=0;
+        Map<Character, Integer> temp=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            if(temp.containsKey(s.charAt(i))){
+                if(i-temp.get(s.charAt(i))==1){
+                    if(temp.size()>=result){
+                        result=temp.size();
+                    }
+                    temp.clear();
+                    temp.put(s.charAt(i),i);
+                    left=i;
+                }else{
+                    //i=temp.get(s.charAt(i))+1;
+                    if(temp.size()>=result){
+                        result=temp.size();
+                    }
+                    //temp.clear();
+                    temp.put(s.charAt(i),i);
+                }
+
+            }else {
+                temp.put(s.charAt(i),i);
+            }
+        }
+        return result>=temp.size()?result:temp.size();
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(lemonadeChange(new int[]{5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20,5,10,5,20}));
-
-
+        System.out.println(lengthOfLongestSubstring("ckilbkd"));
         /*for(int i :sortByBits(new int[]{1024,512,256,128,64,32,16,8,4,2,1})){
             System.out.println(i);
         }*/
