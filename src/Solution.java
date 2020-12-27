@@ -279,8 +279,20 @@ public class Solution {
         }
         return result>=temp.size()?result:temp.size();
     }
+    public static boolean isIsomorphic(String s, String t) {
+        Map<Character,Character> dict=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            if(dict.containsKey(s.charAt(i))){
+                if(dict.get(s.charAt(i))!=t.charAt(i)) return false;
+            }else if(dict.containsValue(t.charAt(i))) return false;
+            else {
+                dict.put(s.charAt(i),t.charAt(i));
+            }
+        }
+        return true;
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(lengthOfLongestSubstring("ckilbkd"));
+        System.out.println(isIsomorphic("paper","title"));
         /*for(int i :sortByBits(new int[]{1024,512,256,128,64,32,16,8,4,2,1})){
             System.out.println(i);
         }*/
