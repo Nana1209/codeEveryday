@@ -291,8 +291,55 @@ public class Solution {
         }
         return true;
     }
+    public static String longestPalindrome(String s) {
+        //动态规划
+        String result="";
+        int len=s.length();
+        boolean[][] dp=new boolean[len][len];
+        for(int l=0;l<len;l++){
+            for(int i=0;i+l<len;i++){
+                if(l==0){
+                    dp[i][i+l]=true;
+                }else if(l==1 ){
+                    dp[i][i+l]=s.charAt(i)==s.charAt(i+l);
+                }else{
+                    dp[i][i+l]=dp[i+1][i+l-1] && s.charAt(i)==s.charAt(i+l);
+                }
+                if(dp[i][i+l] && l+1>result.length()){
+                    result=s.substring(i,i+l+1);
+                }
+            }
+        }
+        return result;
+    }
+    public String longestPalindrome1(String s) {
+        //中心扩散
+        if (s == null || s.length() < 1) {
+            return "";
+        }
+        int start = 0, end = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int len1 = expandAroundCenter(s, i, i);
+            int len2 = expandAroundCenter(s, i, i + 1);
+            int len = Math.max(len1, len2);
+            if (len > end - start) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+
+    public int expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            --left;
+            ++right;
+        }
+        return right - left - 1;
+    }
+
     public static void main(String[] args) throws Exception {
-        System.out.println(isIsomorphic("paper","title"));
+        System.out.println(longestPalindrome("paper"));
         /*for(int i :sortByBits(new int[]{1024,512,256,128,64,32,16,8,4,2,1})){
             System.out.println(i);
         }*/
