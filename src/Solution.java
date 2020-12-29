@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Solution {
     public static int[] twoSum(int[] nums, int target) {
@@ -337,9 +339,55 @@ public class Solution {
         }
         return right - left - 1;
     }
+    public List<Integer> inorderTraversal(TreeNode root) {
+        //递归
+        List<Integer> result=new ArrayList<>();
+        if(root!=null)
+            middleTraversal(result,root);
+        return result;
+    }
+
+    private void middleTraversal(List<Integer> result, TreeNode root) {
+        //递归
+        if(root.left==null && root.right==null){
+            result.add(root.val);
+        }else if(root.left!=null && root.right!=null){
+            middleTraversal(result,root.left);
+            result.add(root.val);
+            middleTraversal(result,root.right);
+        }else if(root.left==null){
+            result.add(root.val);
+            middleTraversal(result,root.right);
+        }else {
+            middleTraversal(result,root.left);
+            result.add(root.val);
+        }
+    }
+    public List<Integer> inorderTraversal1(TreeNode root) {
+        //非递归
+        List<Integer> result=new ArrayList<>();
+        Deque<TreeNode> stack=new LinkedList<>();
+        while(root!=null || !stack.isEmpty()){
+            while(root!=null){
+                stack.addLast(root);
+                root=root.left;
+            }
+            root=stack.pollLast();
+            result.add(root.val);
+            root=root.right;
+
+        }
+        return result;
+    }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(longestPalindrome("paper"));
+        //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
+        Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");
+        Matcher m1 = pattern1.matcher("v1.1-alpha "); // 获取 matcher 对象
+        if(m1.find()){
+            System.out.println(m1.group());
+        }
+        //System.out.println(longestPalindrome("paper"));
         /*for(int i :sortByBits(new int[]{1024,512,256,128,64,32,16,8,4,2,1})){
             System.out.println(i);
         }*/
