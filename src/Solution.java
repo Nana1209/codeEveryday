@@ -379,14 +379,119 @@ public class Solution {
         }
         return result;
     }
+    public List<List<Integer>> largeGroupPositions(String s) {
+        List<List<Integer>> re=new ArrayList<>();
+        if(s.length()<3) return re;
 
+        char c=s.charAt(0);
+        int i=1,start=0,end=0;
+        while(i<s.length()){
+            if(s.charAt(i)==c){
+                end=i;
+
+            }else{
+                if(end-start>=2){
+                    List<Integer> temp=new ArrayList<>();
+                    temp.add(start);
+                    temp.add(end);
+                    re.add(temp);
+
+                }
+                start=i;
+                end=i;
+                c=s.charAt(i);
+            }
+            i++;
+        }
+        return re;
+    }
+    public static int findCircleNum(int[][] isConnected) {
+        Map<Integer,Integer> record=new HashMap<>();
+        int result=0;
+        for(int i=0;i<isConnected.length;i++){
+            record.put(i,-1);
+        }
+        for(int city:record.keySet()){
+            if(record.get(city)==-1){
+                Deque<Integer> shen=new LinkedList<>();
+                result++;
+                shen.addLast(city);
+                while(!shen.isEmpty()){
+                    int targetcity=shen.poll();
+                    record.put(targetcity,result);
+                    for(int j=0;j<isConnected.length;j++){
+                        if(j!=targetcity && isConnected[targetcity][j]==1 && record.get(j)==-1){
+                            shen.addLast(j);
+                            record.put(j,result);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    public int[][] transpose(int[][] A) {
+        int n=A.length;
+        int m=A[0].length;
+        int[][] result=new int[m][n];
+        for(int i=0;i<A.length;i++){
+            for(int j=0;j<A[0].length;j++){
+                result[j][i]=A[i][j];
+            }
+        }
+        return result;
+    }
+    public ListNode[] listOfDepth(TreeNode tree) {
+        //结点值不唯一时没有实现，因为层级是按结点值为key值存储的
+        List<List<Integer>> result=new ArrayList<>();
+        Deque<TreeNode> queue=new LinkedList<>();
+        Map<Integer,Integer> nodeLevel=new HashMap<>();
+        queue.addLast(tree);
+        nodeLevel.put(tree.val,0);
+        while (!queue.isEmpty()){
+            TreeNode node=queue.poll();
+            if(result.size()==nodeLevel.get(node.val)){
+                List<Integer> temp=new ArrayList<>();
+                temp.add(node.val);
+                result.add(temp);
+            }else{
+                result.get(nodeLevel.get(node.val)).add(node.val);
+            }
+            if(node.left!=null){
+                queue.addLast(node.left);
+                nodeLevel.put(node.left.val,nodeLevel.get(node.val)+1);
+            }
+            if(node.right!=null){
+                queue.addLast(node.right);
+                nodeLevel.put(node.right.val,nodeLevel.get(node.val)+1);
+            }
+        }
+        int n=result.size();
+        ListNode[] r=new ListNode[n];
+        for(int i=0;i<n;i++){
+            ListNode root=new ListNode(result.get(i).get(0));
+            if(result.get(i).size()>0){
+                ListNode p=root;
+                for(int j=1;j<result.get(i).size();j++){
+                    ListNode temp=new ListNode(result.get(i).get(j));
+                    p.next=temp;
+                    p=temp;
+                }
+            }
+            r[i]=root;
+
+        }
+        return r;
+    }
     public static void main(String[] args) throws Exception {
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
-        Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");
+        /*Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");
         Matcher m1 = pattern1.matcher("v1.1-alpha "); // 获取 matcher 对象
         if(m1.find()){
             System.out.println(m1.group());
-        }
+        }*/
+        int[][] isConnected={{1,0,0,1},{0,1,1,0},{0,1,1,1},{1,0,1,1}};
+        System.out.println(findCircleNum(isConnected));
         //System.out.println(longestPalindrome("paper"));
         /*for(int i :sortByBits(new int[]{1024,512,256,128,64,32,16,8,4,2,1})){
             System.out.println(i);
