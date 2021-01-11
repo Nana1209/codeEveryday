@@ -483,6 +483,84 @@ public class Solution {
         }
         return r;
     }
+    public static List<String> summaryRanges(int[] nums) {
+        List<String> re=new ArrayList<>();
+        if(nums.length==0){
+            return re;
+        }else  if(nums.length==1){
+            String s=String.valueOf(nums[0]);
+            re.add(s);
+            return re;
+        }else{
+            int start=nums[0];
+            int end=start;
+            String s=String.valueOf(start);
+            for(int i=1;i<nums.length;i++){
+                if(nums[i]==end+1){
+                    end=nums[i];
+                }else{
+                    if(start==end){
+                        //String s=String.valueOf(start);
+                        re.add(s);
+                    }else {
+                        s+="->"+ end;
+                        re.add(s);
+                    }
+                    start=nums[i];
+                    end=start;
+                    s=String.valueOf(start);
+                }
+            }
+            if(start==end){
+                s=String.valueOf(start);
+                re.add(s);
+            }else {
+                s= start +"->"+ end;
+                re.add(s);
+            }
+            return re;
+        }
+
+    }
+    public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+        if (pairs.size() == 0) {
+            return s;
+        }
+
+        // 第 1 步：将任意交换的结点对输入并查集
+        int len = s.length();
+        UnionFind unionFind = new UnionFind(len);
+        for (List<Integer> pair : pairs) {
+            int index1 = pair.get(0);
+            int index2 = pair.get(1);
+            unionFind.union(index1, index2);
+        }
+
+        // 第 2 步：构建映射关系
+        char[] charArray = s.toCharArray();
+        // key：连通分量的代表元，value：同一个连通分量的字符集合（保存在一个优先队列中）
+        Map<Integer, PriorityQueue<Character>> hashMap = new HashMap<>(len);
+        for (int i = 0; i < len; i++) {
+            int root = unionFind.find(i);
+//            if (hashMap.containsKey(root)) {
+//                hashMap.get(root).offer(charArray[i]);
+//            } else {
+//                PriorityQueue<Character> minHeap = new PriorityQueue<>();
+//                minHeap.offer(charArray[i]);
+//                hashMap.put(root, minHeap);
+//            }
+            // 上面六行代码等价于下面一行代码，JDK 1.8 以及以后支持下面的写法
+            hashMap.computeIfAbsent(root, key -> new PriorityQueue<>()).offer(charArray[i]);
+        }
+
+        // 第 3 步：重组字符串
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            int root = unionFind.find(i);
+            stringBuilder.append(hashMap.get(root).poll());
+        }
+        return stringBuilder.toString();
+    }
     public static void main(String[] args) throws Exception {
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
         /*Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");
@@ -490,8 +568,8 @@ public class Solution {
         if(m1.find()){
             System.out.println(m1.group());
         }*/
-        int[][] isConnected={{1,0,0,1},{0,1,1,0},{0,1,1,1},{1,0,1,1}};
-        System.out.println(findCircleNum(isConnected));
+        List<String> l=summaryRanges(new int[]{0, 1, 2, 4, 5, 7});
+        l.isEmpty();
         //System.out.println(longestPalindrome("paper"));
         /*for(int i :sortByBits(new int[]{1024,512,256,128,64,32,16,8,4,2,1})){
             System.out.println(i);
