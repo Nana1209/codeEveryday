@@ -603,6 +603,26 @@ public class Solution {
         }
         return cons.size()-1;
     }
+    public int findLengthOfLCIS(int[] nums) {
+        if(nums.length<2){
+            return nums.length;
+        }
+        int pre=nums[0];
+        int re=1;
+        int asc=1;
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]>pre){
+                asc++;
+
+            }else{
+                re=asc>=re?asc:re;
+                asc=1;
+            }
+            pre=nums[i];
+        }
+        re=asc>=re?asc:re;
+        return re;
+    }
     public static void main(String[] args) throws Exception {
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
         /*Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");
