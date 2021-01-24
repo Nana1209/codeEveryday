@@ -561,6 +561,48 @@ public class Solution {
         }
         return stringBuilder.toString();
     }
+    /*public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String,String> emails=new HashMap<>();
+        List<List<String>> result=new ArrayList<>();
+        for(int i=0;i<accounts.size();i++){
+            boolean contained=false;
+            for(int j=1;j<accounts.get(i).size();j++){
+
+                if(emails.containsKey(accounts.get(i).get(j))){
+                    String name=accounts.get(i).get(0);
+                    for(int p=0;p<result.size();p++){
+                        if(result.get(p).get(0).equals(name)){
+                            for(int q=1;q<result.get(p).size();q++){
+                                if(result.get(p).get(q).equals(accounts.get(i).get(j))){
+                                    result.get(p)
+                                }
+                            }
+                        }
+                    }
+                    continue;
+                }else{
+                    emails.put(accounts.get(i).get(j),accounts.get(i).get(0));
+                }
+            }
+            result.add(accounts.get(i));
+        }
+    }*/
+    public int makeConnected(int n, int[][] connections) {
+        if(connections.length<(n-1)){
+            return -1;
+        }
+        UnionFind uf=new UnionFind(n);
+        Map<Integer,Integer> cons=new HashMap<>();
+        for(int i=0;i<connections.length;i++){
+            uf.union(connections[i][0],connections[i][1]);
+        }
+        for(int i=0;i<n;i++){
+            if(!cons.containsKey(uf.find(i))){
+                cons.put(uf.find(i),1);
+            }
+        }
+        return cons.size()-1;
+    }
     public static void main(String[] args) throws Exception {
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
         /*Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");

@@ -1,7 +1,8 @@
 public class UnionFind {
-    private int[] parent;
+    private int[] parent;//保存每个元素的父节点
     /**
      * 以 i 为根结点的子树的高度（引入了路径压缩以后该定义并不准确）
+     * 记录每个根节点对应的树的深度（如果不是根节点，其rank相当于以它作为根节点的子树的深度）。一开始，把所有元素的rank（秩）设为1。
      */
     private int[] rank;
 
@@ -21,6 +22,7 @@ public class UnionFind {
             return;
         }
 
+        //合并时比较两个根节点，把rank较小者往较大者上合并。
         if (rank[rootX] == rank[rootY]) {
             parent[rootX] = rootY;
             // 此时以 rootY 为根结点的树的高度仅加了 1
@@ -35,6 +37,8 @@ public class UnionFind {
     }
 
     public int find(int x) {
+        //寻父路径压缩
+        //在查询的过程中，把沿途的每个节点的父节点都设为根节点即可。下一次再查询时，我们就可以省很多事
         if (x != parent[x]) {
             parent[x] = find(parent[x]);
         }
