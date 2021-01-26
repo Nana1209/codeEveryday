@@ -623,15 +623,79 @@ public class Solution {
         re=asc>=re?asc:re;
         return re;
     }
+    public int regionsBySlashes(String[] grid) {
+        int N=grid.length;
+        UnionFind uf =new UnionFind(4*N*N);
+        for(int i=0;i<N;i++){
+            char[] row = grid[i].toCharArray();
+            for(int j=0;j<N;j++){
+                int index=(i*N+j)*4;
+                if(row[j]=='/'){
+                    uf.union(index+0,index+3);
+                    uf.union(index+1,index+2);
+                }else if(row[j]=='\\'){
+                    uf.union(index+0,index+1);
+                    uf.union(index+3,index+2);
+                }else{
+                    uf.union(index+0,index+1);
+                    uf.union(index+2,index+1);
+                    uf.union(index+3,index+2);
+                }
+                if(j<N-1){
+                    uf.union((i*N+j)*4+1,(i*N+j+1)*4+3);
+                }
+                if(i<N-1){
+                    uf.union((i*N+j)*4+2,((i+1)*N+j)*4);
+                }
+            }
+        }
+        Map<Integer,Integer> cons=new HashMap<>();
+        for(int i=0;i<4*N*N;i++){
+            if(!cons.containsKey(uf.find(i))){
+                cons.put(uf.find(i),1);
+            }
+        }
+        return cons.size();
+    }
+    public static int numEquivDominoPairs(int[][] dominoes) {
+        /*Map<Integer,Integer> dos=new HashMap<>();
+        for(int i =0;i<dominoes.length;i++){
+            int key=dominoes[i][0]<=dominoes[i][1]?dominoes[i][0]*10+dominoes[i][1]:dominoes[i][1]*10+dominoes[i][0];
+            if(!dos.containsKey(key)){
+                dos.put(key,1);
+            }else {
+                dos.put(key,dos.get(key)+1);
+            }
+        }
+        int sum=0;
+        for(int i :dos.keySet()){
+            if(dos.get(i)>=2){
+                sum+=dos.get(i)*(dos.get(i)-1)/2;
+            }
+        }
+        return sum;*/
+        Map<Integer,Integer> dos=new HashMap<>();
+        int sum=0;
+        for(int i =0;i<dominoes.length;i++){
+            int key=dominoes[i][0]<=dominoes[i][1]?dominoes[i][0]*10+dominoes[i][1]:dominoes[i][1]*10+dominoes[i][0];
+            if(!dos.containsKey(key)){
+                dos.put(key,1);
+
+            }else {
+                sum+=dos.get(key);
+                dos.put(key,dos.get(key)+1);
+            }
+        }
+        return sum;
+    }
     public static void main(String[] args) throws Exception {
+        System.out.println(numEquivDominoPairs(new int[][]{{1,2},{2,1},{1,2}}));
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
         /*Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");
         Matcher m1 = pattern1.matcher("v1.1-alpha "); // 获取 matcher 对象
         if(m1.find()){
             System.out.println(m1.group());
         }*/
-        List<String> l=summaryRanges(new int[]{0, 1, 2, 4, 5, 7});
-        l.isEmpty();
         //System.out.println(longestPalindrome("paper"));
         /*for(int i :sortByBits(new int[]{1024,512,256,128,64,32,16,8,4,2,1})){
             System.out.println(i);
