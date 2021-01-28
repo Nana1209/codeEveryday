@@ -6,11 +6,22 @@ public class UnionFind {
      */
     private int[] rank;
 
+    public int[] getParent() {
+        return parent;
+    }
+
     public UnionFind(int n) {
         this.parent = new int[n];
         this.rank = new int[n];
         for (int i = 0; i < n; i++) {
             this.parent[i] = i;
+            this.rank[i] = 1;
+        }
+    }
+    public UnionFind(int[] p) {
+        this.parent = p;
+        this.rank = new int[p.length];
+        for (int i = 0; i < p.length; i++) {
             this.rank[i] = 1;
         }
     }

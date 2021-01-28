@@ -688,8 +688,49 @@ public class Solution {
         }
         return sum;
     }
+    public static int maxNumEdgesToRemove(int n, int[][] edges) {
+        UnionFind uf=new UnionFind(n);
+        int re=0;
+        for(int i=0;i<edges.length;i++){
+            if(edges[i][0]==3){
+                if(uf.find(edges[i][1]-1)==uf.find(edges[i][2]-1)){
+                    re++;
+                }else {
+                    uf.union(edges[i][1]-1,edges[i][2]-1);
+                }
+            }
+        }
+        int[] p=new int[n];
+        System.arraycopy(uf.getParent(),0,p,0,n);
+        UnionFind uf1=new UnionFind(p);
+        for(int i=0;i<edges.length;i++){
+            if(edges[i][0]==1){
+                if(uf.find(edges[i][1]-1)==uf.find(edges[i][2]-1)){
+                    re++;
+                }else {
+                    uf.union(edges[i][1]-1,edges[i][2]-1);
+                }
+            }else if(edges[i][0]==2){
+                if(uf1.find(edges[i][1]-1)==uf1.find(edges[i][2]-1)){
+                    re++;
+                }else {
+                    uf1.union(edges[i][1]-1,edges[i][2]-1);
+                }
+            }
+        }
+        int pa=uf.find(0);
+        int pa1=uf1.find(0);
+        for(int i=0;i<n;i++){
+            if(uf.find(i)!=pa || uf1.find(i)!=pa1){
+                re=-1;
+            }
+        }
+        return re;
+
+
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(numEquivDominoPairs(new int[][]{{1,2},{2,1},{1,2}}));
+        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
         /*Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");
         Matcher m1 = pattern1.matcher("v1.1-alpha "); // 获取 matcher 对象
