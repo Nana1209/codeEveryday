@@ -729,8 +729,117 @@ public class Solution {
 
 
     }
+    public static int minimumEffortPathdp(int[][] heights) {
+        return effortMoveto(0,0,heights.length-1,heights[0].length-1,heights);
+    }
+    public static int effortMoveto(int si, int sj, int ei, int ej, int[][] heights){
+        if(si==ei && Math.abs(sj-ej)==1 || sj==ej && Math.abs(si-ei)==1){
+            return Math.abs(heights[si][sj]-heights[ei][ej]);
+        }else{
+            int up=0,down=0,left=0,right=0;
+            List<Integer> l=new ArrayList<>();
+            if(ei>0){
+                up=effortMoveto(si,sj,ei-1,ej,heights)>Math.abs(heights[ei-1][ej]-heights[ei][ej])?effortMoveto(si,sj,ei-1,ej,heights):Math.abs(heights[ei-1][ej]-heights[ei][ej]);
+                l.add(up);
+            }
+            if(ei<heights.length-1){
+                down=effortMoveto(si,sj,ei+1,ej,heights)>Math.abs(heights[ei+1][ej]-heights[ei][ej])?effortMoveto(si,sj,ei+1,ej,heights):Math.abs(heights[ei+1][ej]-heights[ei][ej]);
+                l.add(down);
+            }
+            if(ej>0){
+                left=effortMoveto(si,sj,ei,ej-1,heights)>Math.abs(heights[ei][ej-1]-heights[ei][ej])?effortMoveto(si,sj,ei,ej-1,heights):Math.abs(heights[ei][ej-1]-heights[ei][ej]);
+                l.add(left);
+            }
+            if(ej<heights[0].length-1){
+                right=effortMoveto(si,sj,ei,ej+1,heights)>Math.abs(heights[ei][ej+1]-heights[ei][ej])?effortMoveto(si,sj,ei,ej+1,heights):Math.abs(heights[ei][ej+1]-heights[ei][ej]);
+                l.add(right);
+            }
+            return Collections.min(l);
+        }
+    }
+    public int minimumEffortPath(int[][] heights) {
+        List<int[]> edges=new ArrayList<>();
+        int n=heights.length;
+        int m=heights[0].length;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                int index=i*m+j;
+                if(i>0){
+                    int[] edge=new int[3];
+                    edge[0]=index-m;
+                    edge[1]=index;
+                    edge[2]=Math.abs(heights[i][j]-heights[i-1][j]);
+                    edges.add(edge);
+                }
+                if(j>0){
+                    int[] edge=new int[3];
+                    edge[0]=index-1;
+                    edge[1]=index;
+                    edge[2]=Math.abs(heights[i][j]-heights[i][j-1]);
+                    edges.add(edge);
+                }
+            }
+
+        }
+        Collections.sort(edges, new Comparator<int[]>() {
+            public int compare(int[] edge1, int[] edge2) {
+                return edge1[2] - edge2[2];
+            }
+        });
+        UnionFind uf=new UnionFind(n*m);
+        int r=0;
+        for(int[] edge:edges){
+            r=edge[2];
+            uf.union(edge[0],edge[1]);
+            if(uf.connected(0,n*m-1)){
+                return r;
+            }
+        }
+        return r;
+
+
+    }
+    public int numSimilarGroups(String[] strs) {
+        UnionFind uf=new UnionFind(strs.length);
+        for(int i=0;i<strs.length-1;i++){
+            for(int j=i+1;j<strs.length;j++){
+                if(uf.find(i)!=uf.find(j)){
+                    if(isSimilar(strs[i],strs[j])){
+                        uf.union(i,j);
+                    }
+                }
+            }
+        }
+        Map<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<strs.length;i++){
+            int fa=uf.find(i);
+            if(!map.containsKey(fa)){
+                map.put(fa,1);
+            }
+        }
+        return map.size();
+    }
+    public boolean isSimilar(String str1,String str2){
+        int sum=0;
+        List<Character> cs=new ArrayList<>();
+        for(int i=0;i<str1.length();i++){
+            if(str1.charAt(i)!=str2.charAt(i)){
+                sum++;
+                if(sum==3) return false;
+                cs.add(str1.charAt(i));
+                cs.add(str2.charAt(i));
+            }
+        }
+        if(sum==0) return true;
+        if(cs.get(0)==cs.get(3) && cs.get(1)==cs.get(2)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
+//        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
+
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
         /*Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");
         Matcher m1 = pattern1.matcher("v1.1-alpha "); // 获取 matcher 对象

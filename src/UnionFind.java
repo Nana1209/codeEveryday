@@ -55,5 +55,8 @@ public class UnionFind {
         }
         return parent[x];
     }
+    public boolean connected(int x,int y){
+        return find(x)==find(y);
+    }
 
 }
