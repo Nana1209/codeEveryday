@@ -837,7 +837,72 @@ public class Solution {
             return false;
         }
     }
+    public int[] fairCandySwap(int[] A, int[] B) {
+        Map<Integer,Integer> map=new HashMap<>();
+        int sumA=0,sumB=0;
+        for(int b : B){
+            map.put(b,1);
+            sumB+=b;
+        }
+        for(int a:A){
+            sumA+=a;
+        }
+        for(int a:A){
+            int aa=(sumB-sumA)/2+a;
+            if(map.containsKey(aa)){
+                return new int[]{a,aa};
+            }
+        }
+        return null;
+    }
+    public String replaceSpace(String s) {
+        return s.replace(" ","%20");
+    }
+    public int characterReplacement(String s, int k) {
+        int[] records=new int[26];
+        int left=0,right=0;
+        int n=s.length();
+        int maxn=0;
+        while(right<n){
+            records[s.charAt(right)-'A']++;
+            maxn=Math.max(records[s.charAt(right)],maxn);
+            if(right-left+1-maxn>k){
+                records[s.charAt(left++)-'A']--;
+            }
+            right++;
+        }
+        return right-left;
+    }
+    public static double findMaxAverage(int[] nums, int k) {
+        int n=nums.length;
+        int sum=0;
+        for(int i=0;i<k;i++){
+            sum+=nums[i];
+        }
+        int sumtemp=sum;
+        for(int i=k,j=0;i<n;i++,j++){
+            sumtemp=sumtemp+nums[i]-nums[j];
+            sum=sumtemp>=sum?sumtemp:sum;
+        }
+        return (double)sum/k;
+    }
+    public int equalSubstring(String s, String t, int maxCost) {
+        int right=0,left=0;
+        int n=s.length();
+        int cost=0;
+        while(right<n){
+            if(cost+Math.abs(s.charAt(right)-t.charAt(right))<=maxCost){
+                cost+=Math.abs(s.charAt(right)-t.charAt(right));
+                right++;
+            }else{
+                cost=cost+Math.abs(s.charAt(right)-t.charAt(right))-Math.abs(s.charAt(left)-t.charAt(left));
+                right++;left++;
+            }
+        }
+        return right-left;
+    }
     public static void main(String[] args) throws Exception {
+        System.out.println(findMaxAverage(new int[]{0,4,0,3,2},1));
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
