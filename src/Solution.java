@@ -901,8 +901,34 @@ public class Solution {
         }
         return right-left;
     }
+    public static int maxScore(int[] cardPoints, int k) {
+        int sumtemp=0,min=0,n=cardPoints.length;
+        int sum=0;
+        int left=0,right=n-k;
+        for(int i=0;i<right;i++){
+            sumtemp+=cardPoints[i];
+        }
+        min=sumtemp;
+        sum=sumtemp;
+        while(right<n){
+            sum+=cardPoints[right];
+            sumtemp=sumtemp-cardPoints[left]+cardPoints[right];
+            min=sumtemp<=min?sumtemp:min;
+            left++;
+            right++;
+        }
+        return sum-min;
+    }
+    public int maxScoreInArea(int[] cardPoints, int k,int start,int end){
+        if(k>1){
+            if(cardPoints[start]>cardPoints[end]){
+                return cardPoints[start]+maxScoreInArea(cardPoints,k-1,start+1,end);
+            }
+        }
+        return 0;
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(findMaxAverage(new int[]{0,4,0,3,2},1));
+        System.out.println(maxScore(new int[]{1,2,3,4,5,6,1},3));
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
