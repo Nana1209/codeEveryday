@@ -927,6 +927,50 @@ public class Solution {
         }
         return 0;
     }
+    public boolean checkPossibility(int[] nums) {
+        int n=nums.length;
+        int numtemp=nums[0];
+        int k=1;
+        for(int i=0;i<n;i++){
+            if(nums[i]<numtemp){
+                k--;
+                if(k<0) return false;
+            }
+            numtemp=nums[i];
+        }
+        return true;
+    }
+    public int subarraysWithKDistinct(int[] A, int K) {
+        return mostSubarrays(A,K)-mostSubarrays(A,K-1);
+    }
+
+    public int mostSubarrays(int[] a, int k) {
+        int n=a.length;
+        int[] pre=new int[n+1];
+        int left=0,right=0;
+        int count=0;
+        int re=0;
+        while(right<n){
+            if(pre[a[right]]==0){
+                count++;
+            }
+            pre[a[right]]++;
+            right++;
+            while(count>k){
+
+                pre[a[left]]--;
+                if(pre[a[left]]==0){
+                    count--;
+                }
+                left++;
+            }
+            re+=right-left;
+
+        }
+        return re;
+    }
+
+
     public static void main(String[] args) throws Exception {
         System.out.println(maxScore(new int[]{1,2,3,4,5,6,1},3));
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
