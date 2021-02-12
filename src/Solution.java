@@ -970,9 +970,45 @@ public class Solution {
         return re;
     }
 
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> re=new ArrayList<>();
+        if(rowIndex>4){
+            if((rowIndex+1)%2==0){
+                int n=rowIndex/2;
+                for(int i=0;i<=n;i++){
+                    re.add(yanghuiAngle(rowIndex,i));
+                }
+                for(int i=n;i>=0;i++){
+                    re.add(re.get(i));
+                }
+            }else{
+                int n=rowIndex/2;
+                for(int i=0;i<=n;i++){
+                    re.add(yanghuiAngle(rowIndex,i));
+                }
+                for(int i=n-1;i>=0;i++){
+                    re.add(re.get(i));
+                }
+            }
+        }else{
+            for(int i=0;i<=rowIndex;i++){
+                re.add(yanghuiAngle(rowIndex,i));
+            }
+        }
+
+        return re;
+    }
+
+    private static Integer yanghuiAngle(int rowIndex, int i) {
+        if(rowIndex<2 || i==0 || i==rowIndex){
+            return 1;
+        }else{
+            return yanghuiAngle(rowIndex-1,i)+yanghuiAngle(rowIndex-1,i-1);
+        }
+    }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(maxScore(new int[]{1,2,3,4,5,6,1},3));
+        System.out.println(yanghuiAngle(4,1));
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
