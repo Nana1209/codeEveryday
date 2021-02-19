@@ -1006,6 +1006,96 @@ public class Solution {
             return yanghuiAngle(rowIndex-1,i)+yanghuiAngle(rowIndex-1,i-1);
         }
     }
+    public int minSwapsCouples(int[] row) {
+        int n=row.length/2;
+        UnionFind uf=new UnionFind(n);
+        for(int i=0;i<n;i++){
+            int n1=row[i*2]/2;
+            int n2=row[i*2+1]/2;
+            if(n1!=n2){
+                uf.union(n1,n2);
+            }
+        }
+        Map<Integer,Integer> count=new HashMap<>();
+        for(int i=0;i<n;i++){
+            int f=uf.find(i);
+            if(count.containsKey(f)){
+                count.put(f,count.get(f)+1);
+            }else{
+                count.put(f,0);
+            }
+
+        }
+        int re=0;
+        for(int i:count.keySet()){
+            re+=count.get(i);
+        }
+        return  re;
+    }
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        for(int i=0;i<nums.length;i++){
+            nums[Math.abs(nums[i])-1]=-Math.abs(nums[Math.abs(nums[i])-1]);
+        }
+        List<Integer> re=new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>0){
+                re.add(i+1);
+            }
+        }
+        return re;
+    }
+    public int arrayPairSum(int[] nums) {
+        Arrays.sort(nums);
+        int re=0;
+        for(int i=0;i<nums.length-1;i=i+2){
+            re+=nums[i];
+        }
+        return re;
+    }
+    public int[][] matrixReshape(int[][] nums, int r, int c) {
+        int n=nums.length;
+        int m=nums[0].length;
+        if(n*m != r*c){
+            return nums;
+        }else{
+            int[][] re =new int[r][c];
+            int ir=0,ic=0;
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    re[ir][ic]=nums[i][j];
+                    if(ir==r-1){
+                        ir=0;
+                        ic++;
+                    }else{
+                        ir++;
+                    }
+                }
+            }
+            return re;
+        }
+    }
+    public int longestOnes(int[] A, int K) {
+        int n=A.length;
+        int l=0,r=0;
+        int zero=0;
+        int re=0;
+        while(r<n){
+            if(A[r]==0){
+                zero++;
+            }
+            while(zero>K){
+                if(A[l]==0){
+                    zero--;
+                }
+                l++;
+
+            }
+            r++;
+            re=Math.max(re,r-l);
+        }
+        return re;
+
+    }
 
     public static void main(String[] args) throws Exception {
         System.out.println(yanghuiAngle(4,1));
