@@ -1096,7 +1096,34 @@ public class Solution {
         return re;
 
     }
-
+    public int findShortestSubArray(int[] nums) {
+        int n=nums.length;
+        Map<Integer,List<Integer>> record=new HashMap<>();
+        for(int i=0;i<n;i++){
+            if(record.containsKey(nums[i])){
+                List<Integer> recordtemp=record.get(nums[i]);
+                recordtemp.add(i);
+                record.put(nums[i],recordtemp);
+            }else{
+                List<Integer> recordtemp=new ArrayList<>();
+                recordtemp.add(i);
+                record.put(nums[i],recordtemp);
+            }
+        }
+        int mostnum=record.get(nums[0]).size();
+        int min=n;
+        for(int num:record.keySet()){
+            List<Integer> temp=record.get(num);
+            if(temp.size()>mostnum){
+                mostnum=temp.size();
+                min=temp.get(mostnum-1)-temp.get(0)+1;
+            }else if(temp.size()==mostnum){
+                int length=temp.get(mostnum-1)-temp.get(0)+1;
+                min=length<=min?length:min;
+            }
+        }
+        return min;
+    }
     public static void main(String[] args) throws Exception {
         System.out.println(yanghuiAngle(4,1));
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
