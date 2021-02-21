@@ -1124,6 +1124,25 @@ public class Solution {
         }
         return min;
     }
+    public int longestSubarray(int[] nums, int limit) {
+        int n=nums.length;
+        int left=0,right=0;
+        TreeMap<Integer,Integer> record=new TreeMap<>();
+        int re=0;
+        while (right<n){
+            record.put(nums[right],record.getOrDefault(nums[right],0)+1);
+            right++;
+            while(record.lastKey()-record.firstKey()>limit){
+                record.put(nums[left],record.get(nums[left])-1);
+                if(record.get(nums[left])==0){
+                    record.remove(nums[left]);
+                }
+                left++;
+            }
+            re=Math.max(re,right-left);
+        }
+        return re;
+    }
     public static void main(String[] args) throws Exception {
         System.out.println(yanghuiAngle(4,1));
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
