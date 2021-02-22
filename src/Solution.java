@@ -1143,6 +1143,27 @@ public class Solution {
         }
         return re;
     }
+    public boolean isToeplitzMatrix(int[][] matrix) {
+        int m=matrix.length;
+        int n=matrix[0].length;
+        for(int i=0;i<n;i++){
+            int num=matrix[0][i];
+            int index=1;
+            while(index<m && index+i<n){
+                if(matrix[index][i+index]!=num) return false;
+                index++;
+            }
+        }
+        for(int j=1;j<m;j++){
+            int num=matrix[j][0];
+            int index=0;
+            while(index<n && index+j<m){
+                if(matrix[index+j][index]!=num) return false;
+                index++;
+            }
+        }
+        return true;
+    }
     public static void main(String[] args) throws Exception {
         System.out.println(yanghuiAngle(4,1));
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
