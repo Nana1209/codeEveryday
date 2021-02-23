@@ -1164,6 +1164,30 @@ public class Solution {
         }
         return true;
     }
+    public int maxSatisfied(int[] customers, int[] grumpy, int X) {
+        int n=customers.length;
+        int sumnormal=0;
+        for(int i=0;i<n;i++){
+            sumnormal+=grumpy[i]==0?customers[i]:0;
+        }
+        for(int i=0;i<X;i++){
+            sumnormal+=grumpy[i]==1?customers[i]:0;
+        }
+        int temp=sumnormal;
+        for(int left=1,right=X;right<n;left++,right++){
+            temp-=grumpy[left-1]==1?customers[left-1]:0;
+            temp+=grumpy[right]==1?customers[right]:0;
+            /*if(grumpy[left-1]==1){
+                temp-=customers[left-1];
+            }
+            if(grumpy[right]==1){
+                temp+=customers[right];
+            }*/
+            sumnormal=Math.max(sumnormal,temp);
+        }
+        return sumnormal;
+
+    }
     public static void main(String[] args) throws Exception {
         System.out.println(yanghuiAngle(4,1));
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
