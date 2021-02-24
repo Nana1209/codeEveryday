@@ -1188,8 +1188,26 @@ public class Solution {
         return sumnormal;
 
     }
+    public static int[][] flipAndInvertImage(int[][] A) {
+        int m=A.length;
+        int n=A[0].length;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n/2;j++){
+                int temp=A[i][j];
+                A[i][j]=Math.abs(A[i][n-1-j]-1);
+                A[i][n-1-j]=Math.abs(temp-1);
+            }
+            if(n%2==1){
+                A[i][n/2]=Math.abs(A[i][n/2]-1);
+            }
+        }
+        return A;
+
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(yanghuiAngle(4,1));
+
+        int[][] A=flipAndInvertImage(new int[][]{{1,1,0},{1,0,1},{0,0,0}});
+        System.out.println(A[0][0]);
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
