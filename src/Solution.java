@@ -1204,10 +1204,45 @@ public class Solution {
         return A;
 
     }
-    public static void main(String[] args) throws Exception {
+    public static List<Integer> findNumOfValidWords(String[] words, String[] puzzles) {
+        List<Integer> re=new ArrayList<>();
+        for(String p:puzzles){
+            Map<Character,Integer> record=new HashMap<>();
+            for(int i=0;i<p.length();i++){
+                record.put(p.charAt(i),0);
+            }
+            int sum=0;
+            for(String word:words){
+                boolean containF=false;
+                boolean containA=true;
+                for(int i=0;i<word.length();i++){
+                    if(!record.containsKey(word.charAt(i))) {
+                        containA=false;
+                        break;
+                    }else{
+                        containF=word.charAt(i)==p.charAt(0)?true:containF;
+                    }
+                }
+                if(containF && containA) sum++;
+            }
+            re.add(sum);
+        }
+        return re;
+    }
+    public int longestSubstring(String s, int k) {
+        int n=s.length();
+        Map<Character,Integer> record=new HashMap<>();
+        int left=0,right=0;
+        while(right<n){
 
-        int[][] A=flipAndInvertImage(new int[][]{{1,1,0},{1,0,1},{0,0,0}});
-        System.out.println(A[0][0]);
+        }
+    }
+    public static void main(String[] args) throws Exception {
+        String[] ps={"aboveyz","abrodyz","abslute","absoryz","actresz","gaswxyz"};
+        String[] ws={"aaaa","asas","able","ability","actt","actor","access"};
+        List<Integer> l=findNumOfValidWords(ws,ps);
+        System.out.println(l.size());
+
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
         //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
