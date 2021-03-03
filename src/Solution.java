@@ -729,6 +729,21 @@ public class Solution {
 
 
     }
+    public int pivotIndex(int[] nums) {
+        int sum=0;
+        for(int i=0;i<nums.length;i++){
+            sum+=nums[i];
+        }
+        int leftsum=0;
+        for(int i=0;i<nums.length;i++){
+            if(2*leftsum+nums[i]==sum){
+                return i;
+            }else{
+                leftsum+=nums[i];
+            }
+        }
+        return -1;
+    }
     public static int minimumEffortPathdp(int[][] heights) {
         return effortMoveto(0,0,heights.length-1,heights[0].length-1,heights);
     }
@@ -1236,6 +1251,31 @@ public class Solution {
         while(right<n){
 
         }
+        return 0;
+    }
+    public boolean isMonotonic(int[] A) {
+            boolean inc = true, dec = true;
+            int n = A.length;
+            for (int i = 0; i < n - 1; ++i) {
+                if (A[i] > A[i + 1]) {
+                    inc = false;
+                }
+                if (A[i] < A[i + 1]) {
+                    dec = false;
+                }
+            }
+            return inc || dec;
+
+    }
+    public int[] countBits(int num) {
+        int[] re=new int[num+1];
+        int high=0;
+        re[0]=0;
+        for(int i=1;i<=num;i++){
+            high=(i&(i-1))==0?i:high;
+            re[i]=re[i-high]+1;
+        }
+        return re;
     }
     public static void main(String[] args) throws Exception {
         String[] ps={"aboveyz","abrodyz","abslute","absoryz","actresz","gaswxyz"};
