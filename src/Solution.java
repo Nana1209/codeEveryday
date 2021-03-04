@@ -1277,11 +1277,44 @@ public class Solution {
         }
         return re;
     }
+    public static int lengthOfLIS(int[] nums) {
+        int[] dp=new int[nums.length];
+        dp[0]=1;
+        for(int i=1;i<nums.length;i++){
+            int max=1;
+            for(int j=0;j<i;j++){
+                max=(nums[j]<nums[i] && (dp[j]+1)>=max)?dp[j]+1:max;
+            }
+            dp[i]=max;
+        }
+        int re=dp[0];
+        for(int i=0;i<dp.length;i++){
+            re=dp[i]>=re?dp[i]:re;
+        }
+        return re;
+    }
+    public int maxEnvelopes(int[][] envelopes) {
+        Arrays.sort(envelopes, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0]-o2[0];
+            }
+        });
+        int[] dp=new int[envelopes.length];
+        dp[0]=1;
+        int re=dp[0];
+        for(int i=1;i<envelopes.length;i++){
+            int max=1;
+            for(int j=0;j<i;j++){
+                max=(envelopes[j][0]!=envelopes[i][0] && envelopes[j][1]<envelopes[i][1] && (dp[j]+1)>=max)?dp[j]+1:max;
+            }
+            dp[i]=max;
+            re=dp[i]>=re?dp[i]:re;
+        }
+        return re;
+    }
     public static void main(String[] args) throws Exception {
-        String[] ps={"aboveyz","abrodyz","abslute","absoryz","actresz","gaswxyz"};
-        String[] ws={"aaaa","asas","able","ability","actt","actor","access"};
-        List<Integer> l=findNumOfValidWords(ws,ps);
-        System.out.println(l.size());
+        System.out.println(lengthOfLIS(new int[]{10,9,2,5,3,7,101,18}));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
