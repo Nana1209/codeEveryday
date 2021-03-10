@@ -1313,8 +1313,116 @@ public class Solution {
         }
         return re;
     }
+    public int[] nextGreaterElements(int[] nums) {
+        if(nums.length<=1){
+            int[] re=new int[]{-1};
+            return re;
+        }
+        int[] numsort=new int[nums.length];
+        for(int i=0;i<nums.length;i++){
+            numsort[i]=nums[i];
+        }
+        Arrays.sort(numsort);
+        if(numsort[0]==numsort[nums.length-1]){
+            int[] re=new int[nums.length];
+            for(int i=0;i<nums.length;i++){
+                re[i]=-1;
+            }
+            return  re;
+        }
+        Map<Integer,Integer> record=new HashMap<>();
+        for(int i=1;i<numsort.length;i++){
+            int index=i-1;
+            while(numsort[i]==numsort[index]){
+                i++;
+            }
+            record.put(numsort[index],numsort[i]);
+
+        }
+        record.put(numsort[nums.length-1],-1);
+        int[] re=new int[nums.length];
+        for(int i=0;i<nums.length;i++){
+            re[i]=record.get(nums[i]);
+
+        }
+        return re;
+    }
+    public static int minCut(String s) {
+        int n=s.length();
+        boolean[][] ishuiwen=new boolean[s.length()][s.length()];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++)
+                ishuiwen[i][j]=true;
+        }
+        for(int i=n-1;i>=0;i--){
+            for(int j=i+1;j<n;j++){
+                ishuiwen[i][j]=s.charAt(i)==s.charAt(j) && ishuiwen[i+1][j-1];
+            }
+        }
+        int[] cuttimes=new int[n];
+        for(int i=0;i<n;i++){
+            if(ishuiwen[0][i]){
+                cuttimes[i]=0;
+            }else{
+                int min=Integer.MAX_VALUE;
+                for(int j=0;j<i;j++){
+                    if(ishuiwen[j+1][i]){
+                        min=Math.min(min,cuttimes[j]+1);
+                    }
+                }
+                cuttimes[i]=min;
+            }
+        }
+        return cuttimes[n-1];
+    }
+    public static String removeDuplicates(String S) {
+        StringBuffer stack=new StringBuffer();
+        int top=-1;
+        for(int i=0;i<S.length();i++){
+            if(top>=0 && S.charAt(i)== stack.charAt(top)){
+                stack.deleteCharAt(top--);
+            }else {
+                stack.append(S.charAt(i));
+                top++;
+            }
+        }
+
+        return  stack.toString();
+    }
+    public static int calculate(String s) {
+        Deque<Integer> stack=new LinkedList<>();
+        stack.addFirst(1);
+        int sigh=stack.getFirst();
+        int i=0,n=s.length();
+        int re=0;
+        while(i<n){
+            if(s.charAt(i)==' '){
+                i++;
+            }else if(s.charAt(i)=='+'){
+                sigh=stack.getFirst();
+                i++;
+            }else if(s.charAt(i)=='-'){
+                sigh=-stack.getFirst();
+                i++;
+            }else if(s.charAt(i)=='('){
+                stack.addFirst(sigh);
+                i++;
+            }else if(s.charAt(i)==')'){
+                stack.removeFirst();
+                i++;
+            }else{
+                long num = 0;
+                while (i < n && Character.isDigit(s.charAt(i))) {
+                    num = num * 10 + s.charAt(i) - '0';
+                    i++;
+                }
+                re+=sigh*num;
+            }
+        }
+        return re;
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(lengthOfLIS(new int[]{10,9,2,5,3,7,101,18}));
+        System.out.println(calculate("12- (3 + (4 + 5))"));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
