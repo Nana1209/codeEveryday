@@ -1421,8 +1421,68 @@ public class Solution {
         }
         return re;
     }
+    public static int calculate1(String s) {
+        int n=s.length();
+        Deque<Integer> stack=new LinkedList<>();
+        Deque<Integer> sigh=new LinkedList<>();
+        sigh.addFirst(1);
+        int i=0;
+        while(i<n){
+            if(s.charAt(i)==' '){
+                i++;
+            }else if(s.charAt(i)=='+'){
+                sigh.addFirst(1);
+                i++;
+            }else if(s.charAt(i)=='-'){
+                sigh.addFirst(-1);
+                i++;
+            }else if(s.charAt(i)=='*'){
+                int num=stack.removeFirst();
+                i++;
+                while(i<n && s.charAt(i)==' '){
+                    i++;
+                }
+                int temp=s.charAt(i)-'0';
+                i++;
+                while(i<n && Character.isDigit(s.charAt(i))){
+                    temp=temp*10+s.charAt(i)-'0';
+                    i++;
+                }
+                num*=temp;
+                stack.addFirst(num);
+
+            }else if(s.charAt(i)=='/'){
+                int num=stack.removeFirst();
+                i++;
+                while(i<n && s.charAt(i)==' '){
+                    i++;
+                }
+                int temp=s.charAt(i)-'0';
+                i++;
+                while(i<n && Character.isDigit(s.charAt(i))){
+                    temp=temp*10+s.charAt(i)-'0';
+                    i++;
+                }
+                num/=temp;
+                stack.addFirst(num);
+            }else{
+                int num=s.charAt(i)-'0';
+                i++;
+                while(i<n && Character.isDigit(s.charAt(i))){
+                    num=num*10+s.charAt(i)-'0';
+                    i++;
+                }
+                stack.addFirst(num);
+            }
+        }
+        int sum=0;
+        while(!stack.isEmpty()){
+            sum+=(stack.removeFirst()*sigh.removeFirst());
+        }
+        return sum;
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(calculate("12- (3 + (4 + 5))"));
+        System.out.println(calculate1( "3+2* 22 -1"));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
