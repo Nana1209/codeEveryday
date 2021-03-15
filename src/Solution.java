@@ -1481,8 +1481,125 @@ public class Solution {
         }
         return sum;
     }
+    public static int majorityElement(int[] nums) {
+        Map<Integer,Integer> record=new HashMap<>();
+        int n=nums.length;
+        for(int i=0;i<n;i++){
+            if(record.containsKey(nums[i])){
+                record.put(nums[i],record.get(nums[i])+1);
+            }else{
+                record.put(nums[i],1);
+            }
+        }
+        for(int num:record.keySet()){
+            if(record.get(num)>n/2){
+                return record.get(num);
+            }
+        }
+        return 0;
+    }
+    public static boolean isValidSerialization(String preorder) {
+        Deque<Integer> stack=new LinkedList<>();
+        String[] nodes=preorder.split(",");
+        stack.addFirst(1);
+        for(String node:nodes){
+            if(stack.isEmpty()) return false;
+            int times = stack.removeFirst();
+            if(times-1!=0){
+                stack.addFirst(times-1);
+            }
+            if(!node.equals("#")){
+                    stack.addFirst(2);
+            }
+        }
+        boolean re=true;
+        for(int i:stack){
+            if(i!=0){
+                re=false;
+                break;
+            }
+        }
+        return re;
+    }
+    public static List<Integer> spiralOrder(int[][] matrix) {
+        /*List<Integer> re=new ArrayList<>();
+        int i=0,j=0;
+        int right=matrix[0].length-1;
+        int left=0;
+        int up=0;
+        int down=matrix.length-1;
+        while(up<=down || left<=right){
+            if(i==up){
+                while(j<right){
+                    re.add(matrix[i][j]);
+                    j++;
+                }
+                up++;
+                *//*j=right;
+                i++;*//*
+            }else if(j==right){
+                while(i<down){
+                    re.add(matrix[i][j]);
+                    i++;
+                }
+                right--;
+                *//*i=down;
+                j--;*//*
+            }else if(i==down){
+                while(j>left){
+                    re.add(matrix[i][j]);
+                    j--;
+                }
+                down--;
+                *//*j=left;
+                i--;*//*
+            }else if(j==left){
+                while(i>up){
+                    re.add(matrix[i][j]);
+                    i--;
+                }
+                left++;
+                *//*i=up;
+                j++;*//*
+            }
+        }
+        if(re.size()<matrix.length*matrix[0].length)
+            re.add(matrix[i][j]);
+        return re;*/
+        LinkedList<Integer> result = new LinkedList<>();
+        if(matrix==null||matrix.length==0) return result;
+        int left = 0;
+        int right = matrix[0].length - 1;
+        int top = 0;
+        int bottom = matrix.length - 1;
+        int numEle = matrix.length * matrix[0].length;
+        while (numEle >= 1) {
+            for (int i = left; i <= right && numEle >= 1; i++) {
+                result.add(matrix[top][i]);
+                numEle--;
+            }
+            top++;
+            for (int i = top; i <= bottom && numEle >= 1; i++) {
+                result.add(matrix[i][right]);
+                numEle--;
+            }
+            right--;
+            for (int i = right; i >= left && numEle >= 1; i--) {
+                result.add(matrix[bottom][i]);
+                numEle--;
+            }
+            bottom--;
+            for (int i = bottom; i >= top && numEle >= 1; i--) {
+                result.add(matrix[i][left]);
+                numEle--;
+            }
+            left++;
+        }
+        return result;
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(calculate1( "3+2* 22 -1"));
+        List<Integer> te=spiralOrder(new int[][]{{1,2,3}});
+        System.out.println(te.size());
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
