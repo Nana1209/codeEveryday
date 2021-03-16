@@ -1622,9 +1622,31 @@ public class Solution {
         }
         return re;
     }
+    public static int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer,Integer> record=new HashMap<>();
+        for(int num:nums){
+            record.put(num,record.getOrDefault(num,0)+1);
+        }
+        int[][] times=new int[record.size()][2];
+        int index=0;
+        for(int num:record.keySet()){
+            times[index][0]=num;
+            times[index][1]=record.get(num);
+            index++;
+        }
+        Arrays.sort(times,new Comparator<int[]>(){
+            public int compare(int[] a,int[] b){
+                return a[1]-b[1];
+            }});
+        int[] re=new int[k];
+        for(int i=0;i<k;i++){
+            re[i]=times[i][0];
+        }
+        return re;
+    }
     public static void main(String[] args) throws Exception {
-        List<Integer> te=spiralOrder(new int[][]{{1,2,3}});
-        System.out.println(te.size());
+        int[] re=topKFrequent(new int[]{1,1,1,2,2,3},2);
+        System.out.println(re.length);
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
