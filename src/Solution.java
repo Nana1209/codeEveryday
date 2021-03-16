@@ -1597,6 +1597,31 @@ public class Solution {
         }
         return result;
     }
+    public int[][] generateMatrix(int n) {
+        int[][] re=new int[n][n];
+        int zong=n*n;
+        int num=1;
+        int l=0,r=n-1,u=0,d=n-1;
+        while (num<=zong){
+            for(int i=l;i<=r;i++){
+                re[u][i]=num++;
+            }
+            u++;
+            for(int i=u;i<=d;i++){
+                re[i][r]=num++;
+            }
+            r--;
+            for(int i=r;i>=l;i--){
+                re[d][i]=num++;
+            }
+            d--;
+            for(int i=d;i>=u;i--){
+                re[i][l]=num++;
+            }
+            l++;
+        }
+        return re;
+    }
     public static void main(String[] args) throws Exception {
         List<Integer> te=spiralOrder(new int[][]{{1,2,3}});
         System.out.println(te.size());
