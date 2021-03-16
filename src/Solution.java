@@ -1644,6 +1644,34 @@ public class Solution {
         }
         return re;
     }
+    public String frequencySort(String s) {
+        HashMap<Character,Integer> record=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            record.put(s.charAt(i),record.getOrDefault(s.charAt(i),0)+1);
+        }
+        List<Character>[] buckets=new List[s.length()+1];
+        for(Character c:record.keySet()){
+            int times=record.get(c);
+            if(buckets[times]==null){
+                buckets[times]=new ArrayList<>();
+            }
+            buckets[times].add(c);
+        }
+        StringBuilder re=new StringBuilder();
+        for(int i=s.length();i>0;i--){
+            List<Character> temp=buckets[i];
+            if(temp!=null){
+                for(Character c:temp){
+                    for(int j=0;j<i;j++){
+                        re.append(c);
+                    }
+
+                }
+
+            }
+        }
+        return  re.toString();
+    }
     public static void main(String[] args) throws Exception {
         int[] re=topKFrequent(new int[]{1,1,1,2,2,3},2);
         System.out.println(re.length);
