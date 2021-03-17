@@ -1672,9 +1672,26 @@ public class Solution {
         }
         return  re.toString();
     }
+    public static int mySqrt(int x) {
+        if (x <= 1) {
+            return x;
+        }
+        int l = 1, h = x/2+1;
+        while (l <= h) {
+            int mid = l + (h - l) / 2;
+            int sqrt = x / mid;
+            if (sqrt == mid) {
+                return mid;
+            } else if (mid > sqrt) {
+                h = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return h;
+    }
     public static void main(String[] args) throws Exception {
-        int[] re=topKFrequent(new int[]{1,1,1,2,2,3},2);
-        System.out.println(re.length);
+        System.out.println(mySqrt(5));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
