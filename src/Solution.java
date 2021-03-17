@@ -1703,8 +1703,17 @@ public class Solution {
         }
         return l<size?letters[l]:letters[0];
     }
+    public static int climbStairs(int n) {
+        int[] dp=new int[n+1];
+        dp[1]=1;
+        dp[2]=2;
+        for(int i=3;i<=n;i++){
+            dp[i]=dp[i-1]+dp[i-2];
+        }
+        return dp[n];
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(mySqrt(5));
+        System.out.println(climbStairs(3));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
