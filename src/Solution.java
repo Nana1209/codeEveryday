@@ -1690,6 +1690,19 @@ public class Solution {
         }
         return h;
     }
+    public char nextGreatestLetter(char[] letters, char target) {
+        int size=letters.length;
+        int l=0,r=size-1;
+        while(l<=r){
+            int m=l+(r-l)/2;
+            if(letters[m]<=target){
+                l=m+1;
+            }else{
+                r=m-1;
+            }
+        }
+        return l<size?letters[l]:letters[0];
+    }
     public static void main(String[] args) throws Exception {
         System.out.println(mySqrt(5));
 
