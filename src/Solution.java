@@ -1746,8 +1746,62 @@ public class Solution {
         }
         return dp[m-1][n-1];
     }
+    public static int integerBreak(int n) {
+        int[] dp=new int[n+1];
+        dp[2]=1;
+        dp[1]=1;
+        for(int i=3;i<=n;i++){
+            int max=0;
+            for(int j=1;j<i;j++){
+                max=Math.max(max,dp[i-j]*j);
+            }
+            dp[i]=max;
+        }
+        return dp[n];
+    }
+    public static ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode pre=null,cur=head;
+        ListNode temp1=null,temp2=null;
+        int count=1;
+        while(cur!=null){
+            if(count==left-1) temp1=cur;
+            ListNode next=cur.next;
+            if(count<=right && count>=left){
+                if(count==left) temp2=cur;
+                cur.next=pre;
+                pre=cur;
+                if(count==right){
+                    temp1.next=cur;
+                    temp2.next=next;
+                    break;
+                }
+            }
+
+            cur=next;
+            count++;
+        }
+        return head;
+    }
+    public static int numSquares(int n) {
+        int[] dp=new int[n+1];
+        dp[1]=1;
+        for(int i=1;i<=n;i++){
+            if((int)Math.sqrt(i)*(int)Math.sqrt(i)==i){
+                dp[i]=1;
+            }else{
+                int min=n;
+                for(int j=1;j<i;j++){
+                    if((int)Math.sqrt(j)*(int)Math.sqrt(j)==j)
+                        min=Math.min(dp[i-j]+1,min);
+                }
+                dp[i]=min;
+            }
+        }
+        return dp[n];
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(climbStairs(3));
+
+        System.out.println(numSquares(7334));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
