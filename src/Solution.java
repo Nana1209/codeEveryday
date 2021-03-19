@@ -1799,9 +1799,28 @@ public class Solution {
         }
         return dp[n];
     }
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+    //TODO
+    }
+    public static boolean verifyPostorder(int[] postorder) {
+        return verifyPostorder(postorder,0,postorder.length);
+    }
+    public static boolean verifyPostorder(int[] postorder,int left,int right) {
+        if(left==right-1 || left==right) return true;
+        int index=left;
+        while(postorder[right-1]>postorder[index]){
+            index++;
+        }
+        for(int i=index;i<right-1;i++){
+            if(postorder[i]<postorder[right-1]){
+                return false;
+            }
+        }
+        return verifyPostorder(postorder,left,index) && verifyPostorder(postorder,index,right-1);
+    }
     public static void main(String[] args) throws Exception {
 
-        System.out.println(numSquares(7334));
+        System.out.println(verifyPostorder(new int[]{1,6,3,2,5}));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
