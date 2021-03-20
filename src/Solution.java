@@ -1818,9 +1818,77 @@ public class Solution {
         }
         return verifyPostorder(postorder,left,index) && verifyPostorder(postorder,index,right-1);
     }
+    public int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[1]-o2[1];
+            }
+        });
+        int sum=1;
+        int rightRecord=intervals[0][1];
+        for(int i=1;i<intervals.length;i++){
+            if(intervals[i][0]>=rightRecord){
+                sum++;
+                rightRecord=intervals[i][1];
+            }
+        }
+        return intervals.length-sum;
+    }
+    public int numDistinct(String s, String t) {
+        int m=s.length(),n=t.length();
+        if(m<n) return 0;
+        int[][] dp=new int[m+1][n+1];
+        for(int i=0;i<=m;i++){
+            dp[i][n]=1;
+        }
+        for(int i=m-1;i>=0;i--){
+            for(int j=n-1;j>=0;j--){
+                if(s.charAt(i)==t.charAt(j)){
+                    dp[i][j]=dp[i+1][j]+dp[i+1][j+1];
+                }else{
+                    dp[i][j]=dp[i+1][j];
+                }
+            }
+        }
+        return dp[0][0];
+    }
+    public static  int evalRPN(String[] tokens) {
+        Deque<Integer> stack=new LinkedList<>();
+        for(int i=0;i<tokens.length;i++){
+            if(isNumber(tokens[i])){
+                stack.addFirst(Integer.parseInt(tokens[i]));
+            }else{
+                int n1=stack.removeFirst();
+                int n2=stack.removeFirst();
+                int num=0;
+                switch(tokens[i]){
+                    case "+":
+                        num=n2+n1;
+                        break;
+                    case "-":
+                        num=n2-n1;
+                        break;
+                    case "*":
+                        num=n2*n1;
+                        break;
+                    case "/":
+                        num=n2/n1;
+                        break;
+                    default:
+                }
+                stack.addFirst(num);
+            }
+        }
+        return stack.peek();
+    }
+    public static boolean isNumber(String str){
+        String reg = "^-?[0-9]+(.[0-9]+)?$";
+        return str.matches(reg);
+    }
     public static void main(String[] args) throws Exception {
-
-        System.out.println(verifyPostorder(new int[]{1,6,3,2,5}));
+        //System.out.println(evalRPN(new String[]{"-1","6","+"}));
+        System.out.println(evalRPN(new String[]{"10","6","9","3","+","-11","*","/","*","17","+","5","+"}));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
