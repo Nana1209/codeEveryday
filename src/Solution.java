@@ -1886,9 +1886,40 @@ public class Solution {
         String reg = "^-?[0-9]+(.[0-9]+)?$";
         return str.matches(reg);
     }
+    public static  int longestPalindromeLength(String s) {
+        Map<Character,Integer> record =new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            record.put(s.charAt(i),record.getOrDefault(s.charAt(i),0)+1);
+
+        }
+        int sum=0;
+        Iterator<Map.Entry<Character,Integer>> it=record.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry<Character,Integer> cc=it.next();
+            int times=cc.getValue();
+            if(times%2==0){
+                sum+=times;
+                it.remove();
+            }else{
+                sum+=times-1;
+            }
+        }
+        /*for(char c:record.keySet()){
+            int times=record.get(c);
+            if(times%2==0){
+                sum+=times;
+                record.remove(c);
+            }else{
+                sum+=times-1;
+            }
+        }*/
+        if(!record.isEmpty()) sum++;
+        return sum;
+    }
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
-        System.out.println(evalRPN(new String[]{"10","6","9","3","+","-11","*","/","*","17","+","5","+"}));
+
+        System.out.println(longestPalindromeLength("abccccdd"));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
