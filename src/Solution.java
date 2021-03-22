@@ -1934,6 +1934,26 @@ public class Solution {
         }
         return head.next;
     }
+    public int kthSmallest(int[][] matrix, int k) {
+        int m=matrix.length,n=matrix[0].length;
+        PriorityQueue<int[]> queue=new PriorityQueue<>((x,y)->matrix[x[0]][x[1]]<=matrix[y[0]][y[1]]?-1:1);
+        for(int i=0;i<m;i++){
+            if(n>0)
+                queue.add(new int[]{i,0});
+        }
+        int sum=0;
+        int num=0;
+        while(sum<=k){
+            int[] temp=queue.poll();
+            num=matrix[temp[0]][temp[1]];
+            sum++;
+            if(temp[1]+1<n){
+                queue.add(new int[]{temp[0],temp[1]+1});
+            }
+        }
+        return num;
+
+    }
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
 
