@@ -1916,6 +1916,24 @@ public class Solution {
         if(!record.isEmpty()) sum++;
         return sum;
     }
+    public ListNode mergeKLists(ListNode[] lists) {
+        PriorityQueue<ListNode> queue=new PriorityQueue<>((x,y)->x.val<=y.val?-1:1);
+        for(ListNode node:lists){
+            if(node!=null)
+                queue.add(node);
+        }
+        ListNode head=new ListNode(0);
+        ListNode p=head;
+        while (!queue.isEmpty()){
+            ListNode temp=queue.poll();
+            p.next=temp;
+            p=p.next;
+            if(temp.next!=null){
+                queue.add(temp.next);
+            }
+        }
+        return head.next;
+    }
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
 
