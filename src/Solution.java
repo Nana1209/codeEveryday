@@ -1954,6 +1954,72 @@ public class Solution {
         return num;
 
     }
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        isSearched=new int[numCourses];
+        stack=new LinkedList<>();
+        for(int i=0;i<numCourses;i++){
+            edges.add(new ArrayList<>());
+        }
+        for(int[] edge:prerequisites){
+            edges.get(edge[1]).add(edge[0]);
+        }
+        for(int i=0;i<numCourses;i++){
+            if(isSearched[i]==0){
+                isSearched[i]=1;
+                if(!dfs(i)) return false;
+            }
+
+        }
+        return true;
+    }
+    Deque<Integer> stack;
+    int[] isSearched;//未搜索过为0
+    List<List<Integer>> edges=new ArrayList<>();
+
+    /**
+     * 拓扑排序
+     * @param numCourses
+     * @param prerequisites
+     * @return
+     */
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        isSearched=new int[numCourses];
+        stack=new LinkedList<>();
+        for(int i=0;i<numCourses;i++){
+            edges.add(new ArrayList<>());
+        }
+        for(int[] edge:prerequisites){
+            edges.get(edge[1]).add(edge[0]);
+        }
+        for(int i=0;i<numCourses;i++){
+            if(isSearched[i]==0){
+                isSearched[i]=1;
+                if(!dfs(i)) return new int[]{};
+            }
+
+        }
+        int[] re=new int[numCourses];
+        for(int i=0;i<numCourses;i++){
+            re[i]=stack.removeFirst();
+        }
+        return re;
+    }
+
+    private boolean dfs(int node) {
+            for(int i:edges.get(node)){
+                if(isSearched[i]==1) return false;
+                else if(isSearched[i]==0){
+                    isSearched[i]=1;
+                    if(!dfs(i)) return false;
+                }
+            }
+            isSearched[node]=2;
+            stack.addFirst(node);
+            return true;
+
+
+    }
+
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
 
