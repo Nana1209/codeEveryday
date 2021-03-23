@@ -2019,7 +2019,21 @@ public class Solution {
 
 
     }
-
+    public boolean hasCycle(ListNode head) {
+        if(head==null) return false;
+        ListNode slow=head;
+        ListNode fast=head.next;
+        while(slow!=null && fast!=null){
+            if(slow==fast) return true;
+            else{
+                slow=slow.next;
+                if(fast.next!=null)
+                    fast=fast.next.next;
+                else fast=null;
+            }
+        }
+        return false;
+    }
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
 
