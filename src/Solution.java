@@ -2034,10 +2034,49 @@ public class Solution {
         }
         return false;
     }
+    public static boolean find132pattern(int[] nums) {
+        // int n=nums.length;
+        // for(int i=0;i<n-2;i++){
+        //     for(int k=n-1;k>=i;k--){
+        //         if(nums[i]<nums[k]){
+        //             int j=i+1;
+        //             while(j<k){
+        //                 if(nums[k]<nums[j]){
+        //                     return true;
+        //                 }
+        //                 j++;
+        //             }
+        //         }
+        //     }
+        // }
+        // return false;
+        if(nums.length<3) return false;
+        int min=nums[0];
+        TreeMap<Integer,Integer> right=new TreeMap<>();
+        for(int i=1;i<nums.length;i++){
+            right.put(nums[i],right.getOrDefault(nums[i],0)+1);
+        }
+        for(int i=1;i<nums.length;i++){
+            if(min<nums[i]-1){
+                if(right.subMap(min+1,nums[i]).size()!=0){
+                    return true;
+                }else{
+                    if(right.get(nums[i])==1)
+                        right.remove(nums[i]);
+                    else{
+                        right.put(nums[i],right.get(nums[i])-1);
+                    }
+                }
+            }
+            min=Math.min(min,nums[i]);
+        }
+        return false;
+
+    }
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
 
-        System.out.println(longestPalindromeLength("abccccdd"));
+        System.out.println(find132pattern(new int[]{-2,1,2,-2,1,2}));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
