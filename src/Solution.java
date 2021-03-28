@@ -2057,15 +2057,15 @@ public class Solution {
             right.put(nums[i],right.getOrDefault(nums[i],0)+1);
         }
         for(int i=1;i<nums.length;i++){
+            if(right.get(nums[i])==1)
+                right.remove(nums[i]);
+            else{
+                right.put(nums[i],right.get(nums[i])-1);
+            }
             if(min<nums[i]-1){
+
                 if(right.subMap(min+1,nums[i]).size()!=0){
                     return true;
-                }else{
-                    if(right.get(nums[i])==1)
-                        right.remove(nums[i]);
-                    else{
-                        right.put(nums[i],right.get(nums[i])-1);
-                    }
                 }
             }
             min=Math.min(min,nums[i]);
@@ -2076,7 +2076,7 @@ public class Solution {
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
 
-        System.out.println(find132pattern(new int[]{-2,1,2,-2,1,2}));
+        System.out.println(find132pattern(new int[]{3, 1, 4, 2}));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
