@@ -2073,10 +2073,46 @@ public class Solution {
         return false;
 
     }
+    public static int[] findRedundantConnection(int[][] edges) {
+        int n=edges.length+1;
+        int[] parent =new int[n];
+        for(int i=0;i<n;i++){
+            parent[i]=i;
+        }
+        for(int i=0;i<n-1;i++){
+            int[] edge=edges[i];
+            if(find(parent,edge[0])==find(parent,edge[1])){
+                return edge;
+            }else{
+                union(parent,edge[0],edge[1]);
+            }
+        }
+        return null;
+    }
+    public static void union(int[] parent,int n1,int n2){
+        parent[find(parent,n1)]=find(parent,n2);
+    }
+    public static int find(int[] parent,int n){
+        if(parent[n]==n) return n;
+        else{
+            return find(parent,parent[n]);
+        }
+    }
+    public static int findRepeatNumber(int[] nums) {
+        int n=nums.length;
+        for(int i=0;i<n;i++){
+            if(nums[Math.abs(nums[i])]>=0){
+                nums[Math.abs(nums[i])]=0-nums[Math.abs(nums[i])];
+            }else{
+                return Math.abs(nums[i]);
+            }
+        }
+        return 0;
+    }
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
 
-        System.out.println(find132pattern(new int[]{3, 1, 4, 2}));
+        System.out.println(findRepeatNumber(new int[]{2, 3, 1, 0, 2, 5, 3}));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
