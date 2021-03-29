@@ -2109,10 +2109,49 @@ public class Solution {
         }
         return 0;
     }
+    public static TreeNode buildTree(int[] preorder, int[] inorder) {
+        return getHead(preorder,0,preorder.length-1,inorder,0,inorder.length-1);
+    }
+    public static TreeNode getHead(int[] preorder,int preleft,int preright,int[] inorder,int inleft,int inright){
+        if(preleft==preright){
+            return new TreeNode(preorder[preleft]);
+        }else{
+            TreeNode head=new TreeNode(preorder[preleft]);
+            for(int i=inleft;i<=inright;i++){
+                if(inorder[i]==preorder[preleft]){
+                    if(i==inleft){
+                        head.right=getHead(preorder,preleft+1,preright,inorder,inleft+1,inright);
+                    }else if(i==inright){
+                        head.left=getHead(preorder,preleft+1,preright,inorder,inleft,inright-1);
+                    }else{
+                        head.left=getHead(preorder,preleft+1,preleft+i-inleft,inorder,inleft,i-1);
+                        head.right=getHead(preorder,preleft+i-inleft+1,preright,inorder,i+1,inright);
+                    }
+                }
+            }
+            return head;
+        }
+    }
+    public static int minArray(int[] numbers) {
+        int n=numbers.length;
+        int l=0,r=n-1;
+        while(l<r){
+            int m=l+(r-l)/2;
+            if(numbers[l]==numbers[r]){
+                l++;
+            }
+            else if(numbers[m]>numbers[r]){
+                l=m+1;
+            }else{
+                r=m;
+            }
+        }
+        return numbers[l];
+    }
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
-
-        System.out.println(findRepeatNumber(new int[]{2, 3, 1, 0, 2, 5, 3}));
+        String s="dg";
+        System.out.println(minArray(new int[]{3,3,1,3}));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
