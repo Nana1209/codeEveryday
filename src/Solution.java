@@ -2148,10 +2148,123 @@ public class Solution {
         }
         return numbers[l];
     }
+    public static  boolean exist(char[][] board, String word) {
+        int m=board.length;
+        if(m==0) return false;
+        int n=board[0].length;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(hasPath(board,i,j,word)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public static boolean hasPath(char[][] board,int ir,int ic,String word){
+        if(board[ir][ic]!=word.charAt(0)){
+            return false;
+        }else if(word.length()==1){
+            board[ir][ic]=' ';
+            return true;
+        }else{
+            board[ir][ic]=' ';
+            boolean up=false;
+            boolean down=false;
+            boolean left=false;
+            boolean right=false;
+            if(ir>0){
+                up=hasPath(board,ir-1,ic,word.substring(1));
+            }
+            if(ir<board.length-1){
+                down=hasPath(board,ir+1,ic,word.substring(1));
+            }
+            if(ic>0){
+                left=hasPath(board,ir,ic-1,word.substring(1));
+            }
+            if(ic<board[0].length-1){
+                right=hasPath(board,ir,ic+1,word.substring(1));
+            }
+            return up || down || left || right;
+        }
+    }
+    public static int movingCount(int m, int n, int k) {
+        int sum=0;
+        boolean issmall=true;
+        for(int i=0;i<n;i++){
+            int shi=i/10;
+            int ge=i-shi*10;
+            if(shi+ge<=k){
+                if(i<m){
+                    sum+=i+1;
+                }else{
+                    sum+=m;
+                }
+
+            }else{
+                issmall=false;
+                break;
+            }
+        }
+        if(issmall && m>n){
+            for(int i=n;i<m;i++){
+                int shi=i/10;
+                int ge=i-shi*10;
+                if(shi+ge<=k){
+                    sum+=n;
+                }
+                else{
+                    issmall=false;
+                    break;
+                }
+            }
+            if(issmall){
+                for(int i=1;i<n;i++){
+                    int shi=i/10;
+                    int shim=(m-1)/10;
+                    int ge=i-shi*10+(m-1)-shim*10;
+                    if(shi+ge+shim<=k){
+                        sum+=n-i;
+                    }
+                    else{
+                        issmall=false;
+                        break;
+                    }
+                }
+            }
+
+
+        }
+        return sum;
+    }
+
+    /**
+     * 快速幂 转化为二进制来缩减运算步骤
+     * @param x
+     * @param n
+     * @return
+     */
+    public double myPow(double x, int n) {
+        if(x == 0) return 0;
+        long b = n;
+        double res = 1.0;
+        if(b < 0) {
+            x = 1 / x;
+            b = -b;
+        }
+        while(b > 0) {
+            if((b & 1) == 1) res *= x;
+            x *= x;
+            b >>= 1;
+        }
+        return res;
+    }
+
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
         String s="dg";
-        System.out.println(minArray(new int[]{3,3,1,3}));
+
+        System.out.println(movingCount(4,6,15));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
