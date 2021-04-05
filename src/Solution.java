@@ -2259,12 +2259,68 @@ public class Solution {
         }
         return res;
     }
-
+    public static boolean isSubStructure(TreeNode A, TreeNode B) {
+        if(A==null || B==null) return false;
+        Deque<TreeNode> stack=new LinkedList<>();
+        stack.addFirst(A);
+        TreeNode tempnode=stack.removeFirst();
+        while(!stack.isEmpty() || tempnode!=null){
+            if(tempnode==null) {
+                tempnode=stack.removeFirst();
+            }
+            if(tempnode.val==B.val){
+                if(equals(tempnode,B)){
+                    return true;
+                }
+            }
+            if(tempnode.right!=null){
+                stack.addFirst(tempnode.right);
+            }
+            tempnode=tempnode.left;
+        }
+        return false;
+    }
+    public static boolean equals(TreeNode A,TreeNode B){
+        Deque<TreeNode> stackB=new LinkedList<>();
+        stackB.addFirst(B);
+        Deque<TreeNode> stackA=new LinkedList<>();
+        stackA.addFirst(A);
+        TreeNode tempnodeb=stackB.removeFirst();
+        TreeNode tempnodea=stackA.removeFirst();
+        while(!stackB.isEmpty() || tempnodeb!=null){
+            if(tempnodeb==null ) {
+                tempnodeb=stackB.removeFirst();
+                tempnodea=stackA.removeFirst();
+            }else if(tempnodea==null && tempnodeb!=null){
+                return false;
+            }
+            if(tempnodeb.val!=tempnodea.val){
+                return false;
+            }
+            if(tempnodeb.right!=null && tempnodea.right!=null){
+                stackB.addFirst(tempnodeb.right);
+                stackA.addFirst(tempnodea.right);
+            }else if(tempnodeb.right!=null && tempnodea.right==null){
+                return false;
+            }
+            tempnodeb=tempnodeb.left;
+            tempnodea=tempnodea.left;
+        }
+        return true;
+    }
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
         String s="dg";
+        TreeNode n1=new TreeNode(-2);
+        TreeNode n2=new TreeNode(1);
+        TreeNode n3=new TreeNode(1);
+        n1.left=n2;
+        n1.right=n3;
+        TreeNode n4=new TreeNode(-2);
+        TreeNode n5=new TreeNode(1);
+        n4.left=n5;
 
-        System.out.println(movingCount(4,6,15));
+        System.out.println(isSubStructure(n4,n1));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
