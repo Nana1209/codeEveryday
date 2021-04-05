@@ -1,6 +1,8 @@
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+//import org.apache.commons.collections.SetUtils;
 
 public class Solution {
     public static int[] twoSum(int[] nums, int target) {
@@ -2308,6 +2310,7 @@ public class Solution {
         }
         return true;
     }
+
     /**
      * Jaccard 相似度:集合的交集与集合的并集的比例.
      * @param a
@@ -2450,13 +2453,9 @@ public class Solution {
         return ((float) p1) / (p2 * p3);
     }*/
     public static void main(String[] args) throws Exception {
-        //System.out.println(evalRPN(new String[]{"-1","6","+"}));
-        Scanner sc = new Scanner(System.in);
-        while(sc.hasNext()){
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            System.out.println(a+b);
-        }
+
+
+        System.out.println(Levenshtein("id","commentid"));
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
