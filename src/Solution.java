@@ -2308,19 +2308,155 @@ public class Solution {
         }
         return true;
     }
+    /**
+     * Jaccard 相似度:集合的交集与集合的并集的比例.
+     * @param a
+     * @param b
+     * @return
+     */
+    /*public static float jaccard(String a, String b) {
+        if (a == null && b == null) {
+            return 1f;
+        }
+        // 都为空相似度为 1
+        if (a == null || b == null) {
+            return 0f;
+        }
+        Set<Integer> aChar = a.chars().boxed().collect(Collectors.toSet());
+        Set<Integer> bChar = b.chars().boxed().collect(Collectors.toSet());
+        // 交集数量
+        int intersection = SetUtils.intersection(aChar, bChar).size();
+        if (intersection == 0) return 0;
+        // 并集数量
+        int union = SetUtils.union(aChar, bChar).size();
+        return ((float) intersection) / (float)union;
+    }*/
+
+    /**
+     * Sorensen Dice 相似度系数:集合交集的 2 倍除以两个集合相加
+     * @param a
+     * @param b
+     * @return
+     */
+    /*public static float SorensenDice(String a, String b) {
+        if (a == null && b == null) {
+            return 1f;
+        }
+        if (a == null || b == null) {
+            return 0F;
+        }
+        Set<Integer> aChars = a.chars().boxed().collect(Collectors.toSet());
+        Set<Integer> bChars = b.chars().boxed().collect(Collectors.toSet());
+        // 求交集数量
+        int intersect = SetUtils.intersection(aChars, bChars).size();
+        if (intersect == 0) {
+            return 0F;
+        }
+        // 全集，两个集合直接加起来
+        int aSize = aChars.size();
+        int bSize = bChars.size();
+        return (2 * (float) intersect) / ((float) (aSize + bSize));
+    }*/
+
+    /**
+     *     莱文斯坦距离，又称 Levenshtein 距离，是编辑距离的一种。指两个字串之间，由一个转成另一个所需的最少编辑操作次数
+     * 简单的说，就是用编辑距离表示字符串相似度, 编辑距离越小，字符串越相似。
+     * @param a
+     * @param b
+     * @return
+     */
+    public static float Levenshtein(String a, String b) {
+        if (a == null && b == null) {
+            return 1f;
+        }
+        if (a == null || b == null) {
+            return 0F;
+        }
+        int editDistance = editDis(a, b);
+        return 1 - ((float) editDistance / Math.max(a.length(), b.length()));
+    }
+
+    private static int editDis(String a, String b) {
+
+        int aLen = a.length();
+        int bLen = b.length();
+
+        if (aLen == 0) return aLen;
+        if (bLen == 0) return bLen;
+
+        int[][] v = new int[aLen + 1][bLen + 1];
+        for (int i = 0; i <= aLen; ++i) {
+            for (int j = 0; j <= bLen; ++j) {
+                if (i == 0) {
+                    v[i][j] = j;
+                } else if (j == 0) {
+                    v[i][j] = i;
+                } else if (a.charAt(i - 1) == b.charAt(j - 1)) {
+                    v[i][j] = v[i - 1][j - 1];
+                } else {
+                    v[i][j] = 1 + Math.min(v[i - 1][j - 1], Math.min(v[i][j - 1], v[i - 1][j]));
+                }
+            }
+        }
+        return v[aLen][bLen];
+    }
+
+
+    /*public static float cos(String a, String b) {
+        if (a == null || b == null) {
+            return 0F;
+        }
+        Set<Integer> aChar = a.chars().boxed().collect(Collectors.toSet());
+        Set<Integer> bChar = b.chars().boxed().collect(Collectors.toSet());
+
+        // 统计字频
+        Map<Integer, Integer> aMap = new HashMap<>();
+        Map<Integer, Integer> bMap = new HashMap<>();
+        for (Integer a1 : aChar) {
+            aMap.put(a1, aMap.getOrDefault(a1, 0) + 1);
+        }
+        for (Integer b1 : bChar) {
+            bMap.put(b1, bMap.getOrDefault(b1, 0) + 1);
+        }
+
+        // 向量化
+        Set<Integer> union = SetUtils.union(aChar, bChar);
+        int[] aVec = new int[union.size()];
+        int[] bVec = new int[union.size()];
+        List<Integer> collect = new ArrayList<>(union);
+        for (int i = 0; i < collect.size(); i++) {
+            aVec[i] = aMap.getOrDefault(collect.get(i), 0);
+            bVec[i] = bMap.getOrDefault(collect.get(i), 0);
+        }
+
+        // 分别计算三个参数
+        int p1 = 0;
+        for (int i = 0; i < aVec.length; i++) {
+            p1 += (aVec[i] * bVec[i]);
+        }
+
+        float p2 = 0f;
+        for (int i : aVec) {
+            p2 += (i * i);
+        }
+        p2 = (float) Math.sqrt(p2);
+
+        float p3 = 0f;
+        for (int i : bVec) {
+            p3 += (i * i);
+        }
+        p3 = (float) Math.sqrt(p3);
+
+        return ((float) p1) / (p2 * p3);
+    }*/
     public static void main(String[] args) throws Exception {
         //System.out.println(evalRPN(new String[]{"-1","6","+"}));
-        String s="dg";
-        TreeNode n1=new TreeNode(-2);
-        TreeNode n2=new TreeNode(1);
-        TreeNode n3=new TreeNode(1);
-        n1.left=n2;
-        n1.right=n3;
-        TreeNode n4=new TreeNode(-2);
-        TreeNode n5=new TreeNode(1);
-        n4.left=n5;
-
-        System.out.println(isSubStructure(n4,n1));
+        Scanner sc = new Scanner(System.in);
+        while(sc.hasNext()){
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+            System.out.println(a+b);
+        }
 
 //        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
 
