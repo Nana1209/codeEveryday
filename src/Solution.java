@@ -2452,8 +2452,40 @@ public class Solution {
 
         return ((float) p1) / (p2 * p3);
     }*/
+    public static String[] permutation(String s) {
+        if(s==null && s.length()==0) return null;
+        List<Set<String>> dp=new ArrayList<>();
+        Set<String> temp=new HashSet<>();
+        temp.add(s.substring(0,1));
+        dp.add(temp);
+        for(int i=1;i<s.length();i++){
+            char c=s.charAt(i);
+            Set<String> pre=dp.get(i-1);
+            Set<String> cur=new HashSet<>();
+            Iterator it = pre.iterator();
+            while(it.hasNext()){
+                String daichas=it.next().toString();
+                for(int index=0;index<i+1;index++){
+                    StringBuilder sb=new StringBuilder(daichas);
+                    cur.add(sb.insert(index,c).toString());
+                }
+
+            }
+            dp.add(cur);
+        }
+        Set<String> ansl=dp.get(s.length()-1);
+        String[] ans=new String[ansl.size()];
+        Iterator it = ansl.iterator();
+        int i=0;
+        while(it.hasNext()){
+            String ss=it.next().toString();
+            ans[i++]=ss;
+        }
+        return ans;
+    }
     public static void main(String[] args) throws Exception {
-        Scanner sc = new Scanner(System.in);
+        System.out.println(permutation("kzfxxx"));
+        /*Scanner sc = new Scanner(System.in);
         int t = sc.nextInt();
 
         int ans = 0, x;
@@ -2491,7 +2523,7 @@ public class Solution {
                 System.out.print(num+" ");
             }
             System.out.println();
-        }
+        }*/
         /*Scanner sc = new Scanner(System.in);
         int n=sc.nextInt();
         sc.nextLine();
@@ -2621,26 +2653,7 @@ public class Solution {
             System.out.println(a+b);
         }*/
 
-//        System.out.println(Levenshtein("id","commentid"));
 
-//        System.out.println(maxNumEdgesToRemove(4,new int[][]{{3,1,2},{3,2,3},{1,1,4},{2,1,4}}));
-
-        //v(ers?|ersion)?[0-9.]+-?(alpha|beta|rc)([0-9.]?|[0-9.]+[0-9]+)
-        /*Pattern pattern1 = Pattern.compile("v(ers?|ersion)?[0-9.]+(-?(alpha|beta|rc)([0-9.]+\\+?[0-9]?|[0-9]?))?");
-        Matcher m1 = pattern1.matcher("v1.1-alpha "); // 获取 matcher 对象
-        if(m1.find()){
-            System.out.println(m1.group());
-        }*/
-        //System.out.println(longestPalindrome("paper"));
-        /*for(int i :sortByBits(new int[]{1024,512,256,128,64,32,16,8,4,2,1})){
-            System.out.println(i);
-        }*/
-        /*System.out.println(sortString("aaaabbbbcccc"));*/
-        /*int[] nums={2147483647,2147483647,2147483647,2147483647,2147483647,2147483647};
-        System.out.println(reversePairs(nums));*/
-        /*int[] nums={3,2,4};
-        System.out.println(twoSum(nums,6)[0]);
-        System.out.println(twoSum(nums,6)[1]);*/
     }
 
 }
