@@ -124,7 +124,13 @@ public class Solution {
         return ret.toString();
 
     }
-    public static int reversePairs(int[] nums) {
+
+    /**
+     * 暴力
+     * @param nums
+     * @return
+     */
+    public static int reversePairs1(int[] nums) {
         if(nums.length<2) return 0;
         int re=0;
         for(int i=0;i<nums.length-1;i++){
@@ -2483,8 +2489,109 @@ public class Solution {
         }
         return ans;
     }
+    public static int translateNum(int num) {
+        String snum=num+"";
+        int length=snum.length();
+        int[] dp=new int[length+1];
+        if(length<=1) return length;
+        dp[0]=1;
+        dp[1]=1;
+
+        for(int i=2;i<=length;i++){
+            if(25-Integer.parseInt(snum.substring(i-2,i))>=0){
+                dp[i]=dp[i-1]+dp[i-2];
+            }else {
+                dp[i]=dp[i-1];
+            }
+        }
+        return dp[length];
+    }
+    public static int lengthOfLongestSubstring1(String s) {
+        int left=0,right=0;
+        int maxSubLength=0;
+
+        Map<Character,Integer> record=new HashMap<>();
+        while(right<s.length()){
+            Character c=s.charAt(right);
+            if(!record.containsKey(c)){
+                record.put(c,1);
+                right++;
+                maxSubLength=Math.max(maxSubLength,right-left);
+            }else{
+                while(s.charAt(left)!=c && left<right){
+
+                    record.remove(s.charAt(left));
+                    left++;
+                }
+                left++;
+                right++;
+            }
+        }
+        return maxSubLength;
+    }
+
+    /**
+     * 单调栈
+     * @param nums
+     * @return
+     */
+    public int reversePairs2(int[] nums) {
+        Deque<Integer> stack1=new LinkedList<>();
+        Deque<Integer> stack2=new LinkedList<>();
+        int sum=0;
+        for(int i=0;i<nums.length;i++){
+
+            while(!stack1.isEmpty() && nums[i]<stack1.getFirst()){
+                stack2.addFirst(stack1.removeFirst());
+                sum++;
+            }
+            stack1.addFirst(nums[i]);
+            while(!stack2.isEmpty()){
+                stack1.addFirst(stack2.removeFirst());
+            }
+
+        }
+        return sum;
+    }
+    public static int reversePairs3(int[] nums) {
+        int len=nums.length;
+        if(len<2) return 0;
+        int[] temp=Arrays.copyOf(nums,len);
+        int[] order=new int[len];
+        return reverPairs3(temp,order,0,len-1);
+    }
+
+    public static int reverPairs3(int[] nums, int[] order, int start, int end) {
+        if(start==end) return 0;
+        int middle=start+(end-start)/2;
+        int sum=reverPairs3(nums,order,start,middle)+reverPairs3(nums,order,middle+1,end);
+        int left=start,right=middle+1;
+        int index=start;
+        while(index<=end  ){
+            if(left<=middle && right<=end){
+                if(nums[right]<nums[left]){
+                    order[index++]=nums[right++];
+                    sum+=middle-left+1;
+                }else{
+                    order[index++]=nums[left++];
+                }
+            }else if(left>middle){
+                order[index++]=nums[right++];
+
+            }else{
+                order[index++]=nums[left++];
+            }
+
+        }
+        for(int i=start;i<=end;i++){
+            nums[i]=order[i];
+        }
+        return sum;
+    }
+
+
     public static void main(String[] args) throws Exception {
-        System.out.println(permutation("kzfxxx"));
+        System.out.println(reversePairs3(new int[]{1,2}));
         /*Scanner sc = new Scanner(System.in);
         int t = sc.nextInt();
 
