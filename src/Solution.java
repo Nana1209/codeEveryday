@@ -2553,6 +2553,12 @@ public class Solution {
         }
         return sum;
     }
+
+    /**
+     * 逆序对
+     * @param nums
+     * @return
+     */
     public static int reversePairs3(int[] nums) {
         int len=nums.length;
         if(len<2) return 0;
@@ -2589,9 +2595,126 @@ public class Solution {
         return sum;
     }
 
+    public static String reverseWords(String s) {
+        String[] words=s.split(" ");
+        int len=words.length;
+        int left=0,right=len-1;
+        while(left<right){
+            while(words[left].length()==0) left++;
+            while(words[right].length()==0) right--;
+            String temp=words[left];
+            words[left]=words[right];
+            words[right]=temp;
+            left++;
+            right--;
+        }
+        String ans="";
 
+        for(String word:words){
+            if(word.length()!=0){
+                ans+=word+" ";
+            }
+
+        }
+        ans=ans.trim();
+        return ans;
+
+    }
+    public static int[] maxSlidingWindow(int[] nums, int k) {
+        Deque<Integer> window=new LinkedList<>();
+        int max=0;
+        int i=0;
+        for(;i<k;i++){
+            window.addLast(nums[i]);
+            max=Math.max(max,nums[i]);
+        }
+        int len=nums.length-k+1;
+        int[] ans=new int[len];
+        int index=0;
+        ans[index++]=max;
+        while(index<len){
+            int temp=window.removeFirst();
+            window.addLast(nums[i]);
+            if(nums[i]>=max){
+                max=nums[i];
+                ans[index++]=max;
+            }else if(temp==max){
+                max=nums[i];
+                for(int num:window){
+                    max=Math.max(max,num);
+                }
+                ans[index++]=max;
+            }else{
+                ans[index++]=max;
+            }
+            i++;
+        }
+        return ans;
+    }
+    public static int lastRemaining(int n, int m) {
+        List<Integer> nums=new LinkedList<>();
+        for(int i=0;i<n;i++){
+            nums.add(i);
+        }
+        int start=0;
+        while(nums.size()>1){
+            int len=nums.size();
+            int t=m;
+            int r=(start+t-1)%len;
+            nums.remove(r);
+            start=r;
+        }
+        return nums.get(0);
+    }
+    public static ListNode reverseKGroup(ListNode head, int k) {
+        ListNode headtemp=new ListNode(0);
+        headtemp.next=head;
+        ListNode p=headtemp;
+        ListNode headk=headtemp;
+        while(p!=null){
+            int count=k;
+            while(count>0 ){
+                if(p.next==null) return headtemp.next;
+                p=p.next;
+                count--;
+            }
+            ListNode pnext=p.next;
+            ListNode headknext=headk.next;
+            headk.next=p;
+            p.next=null;
+            ListNode ktail=reverse(headknext);
+            ktail.next=pnext;
+
+            headk=ktail;
+            p=headk;
+        }
+        return headtemp.next;
+    }
+    //返回反转后的尾结点
+    public static ListNode reverse(ListNode head){
+
+        ListNode headtemp=new ListNode(0);
+        headtemp.next=head;
+        ListNode p=head.next;
+        ListNode pre=head;
+        while(p!=null){
+            ListNode pnext=p.next;
+            ListNode headtn=headtemp.next;
+            headtemp.next=p;
+            p.next=headtn;
+            pre.next=pnext;
+
+            //pre=p;
+            p=pnext;
+
+        }
+        return pre;
+
+    }
     public static void main(String[] args) throws Exception {
-        System.out.println(reversePairs3(new int[]{1,2}));
+        String s="addg";
+
+        System.out.println(lastRemaining(10,17));
         /*Scanner sc = new Scanner(System.in);
         int t = sc.nextInt();
 
