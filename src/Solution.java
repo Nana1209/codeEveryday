@@ -2666,6 +2666,13 @@ public class Solution {
         }
         return nums.get(0);
     }
+
+    /**
+     * k个一组反转链表
+     * @param head
+     * @param k
+     * @return
+     */
     public static ListNode reverseKGroup(ListNode head, int k) {
         ListNode headtemp=new ListNode(0);
         headtemp.next=head;
@@ -2711,10 +2718,116 @@ public class Solution {
         return pre;
 
     }
-    public static void main(String[] args) throws Exception {
-        String s="addg";
 
-        System.out.println(lastRemaining(10,17));
+    /**
+     * 字符串匹配 暴力
+     * @param haystack
+     * @param needle
+     * @return
+     */
+    public int strStr(String haystack, String needle) {
+        if(needle.length()==0) return 0;if(haystack.length()==0 || haystack.length()<needle.length()) return -1;
+
+        Deque<Integer> indexs=new LinkedList<>();//存所有能匹配到开头的索引
+        for(int i=0;i<haystack.length()-needle.length()+1;i++){
+            if(haystack.charAt(i)==needle.charAt(0)){
+                indexs.addLast(i);
+            }
+        }
+        while(!indexs.isEmpty()){
+            int start=indexs.removeFirst();
+            boolean is=true;
+            for(int i=0;i<needle.length();i++){
+                if(i+start>=haystack.length() || needle.charAt(i)!=haystack.charAt(i+start)){
+                    is=false;
+                    break;
+                }
+            }
+            if(is) return start;
+        }
+        return -1;
+
+    }
+
+    /**
+     * 字符串匹配 KMP
+     * @param haystack
+     * @param needle
+     * @return
+     */
+    public static int strStrKMP(String haystack, String needle) {
+        if(needle.length()==0) return 0;
+        if(haystack.length()==0) return -1;
+        int needleLen=needle.length();
+        int[] next=new int[needleLen];
+        next[0]=-1;
+        int j=-1;
+        int i=0;
+        while(i<needleLen-1){
+            if(j==-1 || needle.charAt(i)==needle.charAt(j)){
+                j++;i++;
+                next[i]=j;
+            }else{
+                j=next[j];
+            }
+
+        }
+        j=0;
+        i=0;
+        while(i<haystack.length()){
+            if(haystack.charAt(i)==needle.charAt(j)){
+                if(j==needleLen-1) return i-needleLen+1;
+                i++;j++;
+
+            }else if(j>0){
+                j=next[j];
+            }else {
+                i++;
+            }
+        }
+        return -1;
+
+    }
+    public static int[] sortArray(int[] nums) {
+        quicksort(nums,0,nums.length-1);
+        return nums;
+    }
+    public static int quicksort(int[] nums,int start,int end){
+        if(start<end){
+            int targetnum=nums[start];
+            int tail=end;
+            int head=start+1;
+            while(head<tail){
+                while(head<=end && nums[head]<=targetnum){
+                    head++;
+                }
+                while(tail>start && nums[tail]>=targetnum){
+                    tail--;
+                }
+                if(head<tail){
+                    int temp=nums[head];
+                    nums[head]=nums[tail];
+                    nums[tail]=temp;
+                }
+            }
+            if(start<tail && nums[start]>nums[tail]){
+                int temp=nums[start];
+                nums[start]=nums[tail];
+                nums[tail]=temp;
+            }
+
+            quicksort(nums,start,tail-1);
+            quicksort(nums,tail+1,end);
+            return tail;
+        }else{
+            return 0;
+        }
+
+    }
+    public static void main(String[] args) throws Exception {
+        String s="kello";
+        String s1="li";
+        System.out.println(sortArray(new int[]{5,2,3,1}));
         /*Scanner sc = new Scanner(System.in);
         int t = sc.nextInt();
 
