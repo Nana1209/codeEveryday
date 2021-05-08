@@ -2824,10 +2824,29 @@ public class Solution {
         }
 
     }
+    public static int[] findMaxRight(int[] nums){
+        Deque<Integer> stack=new LinkedList<>();
+        int[] ans=new int[nums.length];
+        for(int i=0;i<nums.length;i++){
+            while(!stack.isEmpty() && nums[stack.getFirst()]<nums[i]){
+                ans[stack.getFirst()]=nums[i];
+                stack.removeFirst();
+            }
+            stack.addFirst(i);
+        }
+        if(!stack.isEmpty()){
+            for(int index:stack){
+                ans[index]=-1;
+            }
+        }
+        return ans;
+    }
     public static void main(String[] args) throws Exception {
-        String s="kello";
-        String s1="li";
-        System.out.println(sortArray(new int[]{5,2,3,1}));
+        int[] ans=findMaxRight(new int[]{8, 2, 5, 4, 3, 9, 7, 2, 5});
+        for(int num:ans){
+            System.out.println(num);
+        }
+
         /*Scanner sc = new Scanner(System.in);
         int t = sc.nextInt();
 
