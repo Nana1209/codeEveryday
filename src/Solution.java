@@ -60,6 +60,7 @@ public class Solution {
             result.addAll((ArrayList<Integer>)bitsrecord.get(account));
         }
         int[] r=result.stream().mapToInt(Integer::valueOf).toArray();
+        PriorityQueue<Integer> q=new PriorityQueue<>();
         return r;
     }
     public int findMinArrowShots(int[][] points){
