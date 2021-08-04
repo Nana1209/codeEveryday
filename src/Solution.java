@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -59,9 +60,11 @@ public class Solution {
             result.addAll((ArrayList<Integer>)bitsrecord.get(account));
         }
         int[] r=result.stream().mapToInt(Integer::valueOf).toArray();
+        PriorityQueue<Integer> q=new PriorityQueue<>();
         return r;
     }
     public int findMinArrowShots(int[][] points){
+        ConcurrentHashMap<String,Integer> record=new ConcurrentHashMap<>();
         if(points.length==0) return 0;
         int result=0;
         Arrays.sort(points, new Comparator<int[]>() {
