@@ -1,5 +1,6 @@
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LazySingle {
     private LazySingle() {
@@ -28,5 +29,6 @@ public class LazySingle {
         LazySingle instance2=declaredConstructor.newInstance();
         System.out.println(instance2);
         System.out.println(instance);
+        AtomicInteger ai=new AtomicInteger(1);
     }
 }
