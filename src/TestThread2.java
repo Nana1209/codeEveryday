@@ -1,7 +1,8 @@
 /**
  * 创建线程方法2
  */
-public class TestThread2 implements Runnable {
+public class
+TestThread2 implements Runnable {
     @Override
     public void run() {
         //run方法线程体
