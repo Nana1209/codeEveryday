@@ -29,9 +29,11 @@ public class GroupChatClient {
 
                             //得到pipeline
                             ChannelPipeline pipeline = ch.pipeline();
+
                             //加入相关handler
-                            pipeline.addLast("decoder", new StringDecoder());
                             pipeline.addLast("encoder", new StringEncoder());
+                            pipeline.addLast("decoder", new StringDecoder());
+
                             //加入自定义的handler
                             pipeline.addLast(new GroupChatClientHandler());
                         }
