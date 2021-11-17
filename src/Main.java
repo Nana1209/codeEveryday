@@ -21,6 +21,14 @@ public class Main {
         System.out.println(resultString);
         reader.close();
         threadPoolExecutor.shutdown();
+        int[][] nums=new int[2][3];
+        Arrays.sort(nums,(a,b)->{
+            if(a[0]==b[0]){
+                return a[1]-b[1];
+            }else {
+                return a[0]-b[0];
+            }
+        });
     }
 
     public interface Line {

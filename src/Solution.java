@@ -2844,179 +2844,52 @@ public class Solution {
         }
         return ans;
     }
+
+    /**
+     * 解压缩HG[3|B[2|CA]]F-》HGBCACABCACABCACAF
+     * @param s
+     * @param start
+     * @param end
+     * @return
+     */
+    public static String tar(String s,int start,int end){
+        Deque<Integer> stack=new LinkedList<>();
+        Deque<StringBuilder> stringStack=new LinkedList<>();
+        Deque<Integer> timeStack=new LinkedList<>();
+
+        timeStack.addLast(1);
+        stringStack.addLast(new StringBuilder());
+        for(int i=start;i<=end;i++){
+            if(s.charAt(i)=='['){
+                stringStack.addLast(new StringBuilder());
+                timeStack.addLast(1);
+                stack.addLast(i);
+
+            }else if(s.charAt(i)==']'){
+                String stemp=stringStack.removeLast().toString();
+                int timetemp=timeStack.removeLast();
+                for(int j=0;j<timetemp;j++){
+                    stringStack.getLast().append(stemp);
+                }
+            }else if(s.charAt(i)<='Z' && s.charAt(i)>='A'){
+                    stringStack.getLast().append(s.charAt(i));
+            }else{
+                    int numend=s.indexOf("|",i);
+
+                    timeStack.removeLast();
+                    timeStack.addLast(Integer.parseInt(s.substring(i,numend)));
+                    i=numend;
+            }
+        }
+
+        return stringStack.getLast().toString();
+    }
     public static void main(String[] args) throws Exception {
-        int[] ans=findMaxRight(new int[]{8, 2, 5, 4, 3, 9, 7, 2, 5});
-        for(int num:ans){
-            System.out.println(num);
-        }
+        String s="HG[3|B[2|CA]]F";
+        System.out.println(tar(s,0,s.length()-1));
+        Map a=new HashMap();
 
-        /*Scanner sc = new Scanner(System.in);
-        int t = sc.nextInt();
 
-        int ans = 0, x;
-        for(int i = 0; i < t; i++){
-            int n=sc.nextInt();
-            int[][] record=new int[n][4];
-            for(int j=0;j<n;j++){
-                record[j][0]=j;
-                record[j][1]=sc.nextInt();//到达时刻
-                record[j][2]=sc.nextInt();
-            }
-            Arrays.sort(record, new Comparator<int[]>() {
-                public int compare(int[] point1, int[] point2) {
-                    if (point1[1] >= point2[1]) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-            });
-            Deque<int[]> queue=new LinkedList<>();
-            for(int k=0;k<n;k++){
-                queue.addLast(record[k]);
-            }
-            int cur=1;
-            int[] res=new int[n];
-            while(!queue.isEmpty()){
-                int[] child=queue.removeFirst();
-                if(child[2]>=cur){
-                    res[child[0]]=cur;
-                    cur++;
-                }
-            }
-            for(int num:res){
-                System.out.print(num+" ");
-            }
-            System.out.println();
-        }*/
-        /*Scanner sc = new Scanner(System.in);
-        int n=sc.nextInt();
-        sc.nextLine();
-        String[] ss=sc.nextLine().split(" ");
-        Arrays.sort(ss);
-        String ans="";
-        for(String s:ss){
-            ans+=s+" ";
-        }
-        ans=ans.trim();
-        System.out.println(ans);*/
-        /*Scanner sc = new Scanner(System.in);
-        int[][] dist=new int[6][6];
-        //int ans = 0, x;
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < 6; j++){
-                dist[i][j] = sc.nextInt();
-            }
-        }
-        int[] ans=new int[5];
-        int[] path=new int[5];
-        Deque<Integer> queue=new LinkedList<>();
-        for(int i=0;i<5;i++){
-            if(dist[0][i+1]==-1){
-                ans[i]=Integer.MAX_VALUE;
-            }else{
-                ans[i]=dist[0][i+1];
-            }
-
-            path[i]=1;
-            if(dist[0][i+1]!=-1){
-                queue.addLast(i+2);
-            }
-        }
-        while(!queue.isEmpty()){
-            int no=queue.removeFirst();
-            for(int i=1;i<6;i++){
-                if(dist[no-1][i]!=0 && dist[no-1][i]!=-1){
-                    if(ans[no-2]+dist[no-1][i]<ans[i-1]){
-                        ans[i-1]=ans[no-2]+dist[no-1][i];
-                        path[i-1]=no;
-                        if(!queue.isEmpty() && queue.getLast()!=i+1)
-                            queue.addLast(i+1);
-                    }
-                }
-            }
-        }
-        for(int i=0;i<5;i++)
-            System.out.println(ans[i]);*/
-        /*Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int maxWeight = sc.nextInt();
-        int[] weights=new int[n];
-        int[] costs=new int[n];
-        for(int i = 0; i < n; i++){
-            weights[i]=sc.nextInt();
-        }
-        for(int i = 0; i < n; i++){
-            costs[i]=sc.nextInt();
-        }
-        int ans=0;
-        int wei=0;
-        float[][] record=new float[n][3];
-        for(int i=0;i<n;i++){
-            record[i][0]=weights[i];
-            record[i][1]=costs[i];
-            record[i][2]=(float)costs[i]/weights[i];
-        }
-        Arrays.sort(record, new Comparator<float[]>() {
-            public int compare(float[] point1, float[] point2) {
-                if (point1[1] >= point2[1]) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        });
-        for(int i=0;i<n;i++){
-            if(wei+record[i][0]<=maxWeight){
-                ans+=record[i][1];
-            }
-        }
-
-        System.out.println(ans);*/
-        /*int a=-1;
-        int b=-1;
-        Scanner sc = new Scanner(System.in);
-        a=sc.nextInt();
-        b=sc.nextInt();
-        while(a!=0 && b!=0){
-            System.out.println(a+b);
-            a=sc.nextInt();
-            b=sc.nextInt();
-
-        }*/
-        /*while(sc.hasNext()){
-            String[] nusm=sc.nextLine().split(" ");
-            int sum=0;
-            for(String num:nusm){
-                sum+=Integer.parseInt(num);
-            }
-            System.out.println(sum);
-
-        }*/
-        /*while(sc.hasNext()){
-            int n=sc.nextInt();
-            if(n!=0){
-                int sum=0;
-                for(int i=0;i<n;i++){
-                    sum+=sc.nextInt();
-                }
-                System.out.println(sum);
-            }else{
-                break;
-            }
-
-        }*/
-        /*int n=sc.nextInt();
-        for(int i=0;i<n;i++){
-            a = sc.nextInt();
-            b = sc.nextInt();
-            System.out.println(a+b);
-        }*/
-        /*while(sc.hasNext()){
-            a = sc.nextInt();
-            b = sc.nextInt();
-            System.out.println(a+b);
-        }*/
 
 
     }
